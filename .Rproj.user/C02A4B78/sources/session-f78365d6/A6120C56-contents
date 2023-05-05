@@ -1,0 +1,18 @@
+---
+title: "Projet Stats"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-05-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Les données sont prises de https://www.kaggle.com/ et representent les joueuse de volleyball et leurs caractéristiques.
+
+
+
