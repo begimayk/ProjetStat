@@ -1,0 +1,225 @@
+---
+title: "Compte rendu TP1 - Initiation à R"
+author: "Mettre son nom et prénom et son groupe"
+date: "Mettre ici la date du jour"
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    toc: yes
+---
+```{r}
+texte = "Phrase qu'il faut mettre entre guillemets."
+logique = TRUE
+faux = FALSE
+
+x = 1 + 2 + 3
+# ce qui est après un # correspond à du commentaire et n'est pas interprété comme du code
+x = x * 2 # on multiplie x de toute à l'heure par 2
+y = x**2 # y prend la valeur de x au carré (puissance 2)
+```
+Les valeurs logiques peuvent être le résultats de tests :
+
+```{r}
+x < 10 # strictement inférieur à 10 ?
+x <= 11 # inférieur ou égal
+x == 12 # test d'égalité
+x >= 13
+x > 0
+x != 0 # test si x est différent de 0
+! FALSE # inverse une valeur logique
+```
+
+```{r}
+x = c(2,3,5,8,4,6)
+```
+
+La longueur du vecteur :
+```{r}
+length(x)
+```
+
+
+
+# Premiers pas avec R et RMarkdown
+
+Ceci est un document de type R Markdown. Markdown est une mise en forme syntaxique simplifiée pour rédiger des documents HTML, PDF ou encore MsWord. Pour plus de détails sur l'utilisation de R Markdown cf. <http://rmarkdown.rstudio.com>.
+
+Le fichier doit avoir une extension ".Rmd". Quand vous cliquez sur le bouton **Knit**, le document sera généré et inclura le contenu ainsi que la sortie produite par le code R intégré dans le document. Le code R peut être intégré comme ceci :
+
+```{r}
+-10 * log10(0.00666)
+```
+
+Il existe beaucoup de documents et tutoriels en ligne que vous pouvez explorer par vous-même. Exemples :
+
+- Mise en forme du texte : https://rmarkdown.rstudio.com/lesson-8.html
+- Bouts de code R (chunks) : https://rmarkdown.rstudio.com/lesson-3.html
+
+# Utilisation et calcul avec du code R 
+
+Cette partie est à compléter avec le sujet de TP en ligne :
+
+## Utilisation de variables 
+
+Les variables (ou objets) permettent de stocker des données qui peuvent être :
+
+* une valeur simple de type numérique (`numeric`), logique (`logical`), chaîne de caractères (`character`) ou qualitative (`factor`).
+* une liste (appelée `vector`).
+* un tableau à 2 dimensions, les colonnes pouvant avoir des types différents (`data.frame`). Ce sont les plus utilisés en statistiques.
+* un tableau à 2 dimensions, toutes les cases ayant le même type (`matrix`).
+* un tableau à plus de 2 dimension (`array`).
+* une combinaison des précédents (`list`). 
+
+Une variable a un nom (défini par l'utilisateur) qui permet d'accéder à son contenu.
+
+**Créer une variable appelée x qui stocke le résultat du calcul précédent 1 + 2 + 3.** L'affectation d'une valeur à une variable se fait avec <- ou le signe = comme suit dans la console : 
+
+```{r}
+x = 1 + 2 + 3
+```
+
+## Vecteurs 
+
+```{r}
+texte = "Phrase qu'il faut mettre entre guillemets."
+logique = TRUE
+faux = FALSE
+x = x * 2 # on multiplie x de toute à l'heure par 2)
+y = x**2 # y prend la valeur de x au carré (puissance 2)
+```
+
+```{r}
+x < 10 # strictement inférieur à 10 ?
+x <= 11 # inférieur ou égal
+x == 12 # test d'égalité
+x >= 13
+x != 0 # test si x est différent de 0
+x = c(2,3,5,8,4,6)
+length(x)
+```
+
+## Fonctions
+
+
+```{r}
+
+summary(x)
+min(x)
+max(x)
+median(x)
+mean(x)
+var(x)
+sd(x)
+  
+id <- c('id.453', 'id.452', 'id.455', 'id.459', 'id.458', 'id.456', 'id.450', 'id.451')
+age <- c(19, 45, 67, 53, 17, 30, 27, 35)
+fumeur <- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE)
+sex <- c('f', 'f', 'h', 'h', 'f', 'h', 'f', 'f')
+ma.bd <- data.frame(Id=id, Age=age, Fumeur=fumeur, Sex=sex); ma.bd
+
+dim(ma.bd); nrow(ma.bd); ncol(ma.bd)
+names(ma.bd)
+
+ma.bd$Sex
+ma.bd[,2]
+ma.bd$Age[ma.bd$Fumeur==FALSE]
+```
+Les colonnes sont directement accessibles dans l’espace de travail (sans devoir taper le nom du data frame et
+le $) après avoir attaché le data frame :
+```{r}
+
+
+attach(ma.bd)
+
+
+```
+
+## Lecture et écriture de fichiers contenant des données
+
+```{r}
+url1 <- "croissance_plantes.txt"
+d1 <- read.table(url1,
+header=TRUE, # la premiere ligne contient le nom des variables
+sep=';') # les variables sont separees par des ;
+
+croissance = read.table("croissance_plantes.txt", sep="\t",header=TRUE)
+croissance
+croissance[1 , ] # ligne 1
+croissance[ , 1] # colonne 1
+croissance[1, 1] # première case
+croissance$poids # colonne qui s'appelle poids (la première)
+croissance[ , 'poids']# encore une autre manière d'y accéder
+
+```
+Pour y accéder sans avoir à chaque fois à mettre le nom croissance, on utilise attach :
+```{r}
+attach(croissance)
+```
+
+Pour récupérer une partie des données, on peut faire comme précédemment avec un vecteur. Par exemple
+pour ne récupérer que les lignes correspondant à des données d’origine des pyrénées :
+```{r}
+origine_geo == 'pyr' # test pour obtenir VRAI/FAUX
+which(origine_geo == 'pyr') # test pour obtenir les numéros des lignes
+# et ensuite
+croissance[ origine_geo == 'pyr' , 1:2 ]
+# ou bien
+croissance[ which(origine_geo == 'pyr') , 1:2 ]
+# pour stocker le résultats dans une autre variable
+pyr = croissance[ origine_geo == 'pyr' , 1:2 ]
+```
+## Fonctions graphiques 
+
+```{r}
+write.table(pyr, "croissance_plantes_pyr.txt", quote=F, col.names=T, row.names=F, sep="\t")
+```
+Pour commencer, un camembert avec le nombre d’individus par origine (variable qualitative) :
+
+```{r}
+table(origine_geo) # les effectifs
+pie( table(origine_geo) ) # le camembert
+pie (table(origine_geo), main="origine géographique des plantes") # avec un titre
+```
+Un histogramme (variable quantitative):
+
+```{r}
+
+hist(taille, xlim=c(40,90), xlab="taille (cm)", ylab="effectif", freq=T,
+main="histogramme de la taille des plantes", col="orange")
+```
+Une boite à moustaches (variable quantitative)
+```{r}
+boxplot(taille, main="boxplot de la taille des plantes", ylab="taille")
+```
+
+
+Plusieurs boites à moustaches (une variable quantitative en fonction des modalités d’une variable qualitative):
+```{r}
+boxplot(taille~origine_geo, las=3,
+main="boxplot de la taille des plantes en fonction de l'origine géographique")
+stripchart(taille~origine_geo,las=1)
+```
+
+Un graphique à 2 dimensions ou nuage de points ( 2 variables quantitatives mesurées sur les mêmes individus):
+
+```{r}
+plot( taille, poids)
+```
+
+Affichage de plusieurs graphiques dans la même fenêtre :
+
+```{r}
+par(mfrow=c(2,2)) # 2 en lignes et 2 en colonnes
+hist(taille,xlim=c(40,90),xlab="taille (cm)",ylab="effectif",freq=T,
+main="histogramme de la taille des plantes",col="orange")
+boxplot(taille,main="boxplot de la taille des plantes",ylab="taille")
+boxplot(taille~origine_geo,las=3)
+stripchart(taille~origine_geo,las=1)
+```
+
+Sauvegarde et/ou exportation des graphiques. Dans l’onglet Plots, au choix dans le menu Export :
+• Save as Image... : différents format disponibles (PNG, JPEG, TIFF, SVG, ...)
+• Save as PDF...
+• Copy to Clipboard... : copie en mémoire (presse papier). Essayez de le coller par exemple dans
+MsWord, Powerpoint ou LibreOffice.

@@ -20,3 +20,10 @@ La date de naissance, la taille et le poids sont des caractéristiques physiques
 En utilisant ces données, il est possible de mener des analyses statistiques pour étudier la relation entre ces caractéristiques et les performances des joueuses sur le terrain, ainsi que pour étudier les différences entre les joueuses de différents pays et postes de jeu. Ces informations peuvent être utiles pour les entraîneurs et les recruteurs pour sélectionner les joueuses les plus adaptées à leur équipe, ainsi que pour les chercheurs qui s'intéressent aux facteurs qui influencent les performances sportives.
 
 ## Chargement de données 
+
+```{r}
+
+url <- "women_vb.csv"
+data <- read.csv(url,sep=';', header=TRUE)
+
+```
