@@ -1,0 +1,433 @@
+Index;Nom;Annee_de_naissance;Taille;Poids;Attaque (hauteur maximale à laquelle la joueuse peut attaquer);Block (hauteur maximale à laquelle la joueusue peut bloquer);Poste;Nationalité
+1;Angelina Lazarenko;1998;193;80;320;305;Centrale;Russie
+2;Svetlana Serbina;1996;182;71;295;284;Passeuse;Russie
+3;Ekaterina Shkurikhina;1996;190;72;306;296;Pointue;Russie
+4;Kristina Kurnosova;1997;176;62;288;278;Libero;Russie
+5;Ekaterina Novikova;1996;181;70;290;275;Passeuse;Russie
+6;Victoria Zhurbenko;1996;186;67;306;297;Centrale;Russie
+7;Angelina Sperskaite;1997;188;72;305;295;Pointue;Russie
+8;Anastasiia Barchuk;1996;187;78;305;297;Centrale;Russie
+9;Anastasiia Cheremisina;1996;187;80;305;298;Pointue;Russie
+10;Anna Lazareva;1997;190;67;315;300;Receptionneuse/attaquante;Russie
+11;Tatiana Iurinskaia;1996;195;69;305;275;Pointue;Russie
+12;Sabina Gilfanova;1996;187;79;300;296;Receptionneuse/attaquante;Russie
+13;Drussyla Costa;1996;182;73;304;286;Pointue;Bresil
+14;Lana Conceicao;1996;175;72;292;281;Pointue;Bresil
+15;Ariane Pinto;1997;191;79;291;284;Receptionneuse/attaquante;Bresil
+16;Laiza Ferreira;1996;181;71;301;285;Centrale;Bresil
+17;Gabriela Candido Da Silva;1996;181;75;296;285;Pointue;Bresil
+18;Gabriela Silva;1996;182;75;296;281;Centrale;Bresil
+19;Karoline Tormena;1996;187;69;295;284;Centrale;Bresil
+20;Lorenne Geraldo Teixeira;1996;187;72;306;289;Receptionneuse/attaquante;Bresil
+21;Thais Oliveira;1996;172;69;275;272;Passeuse;Bresil
+22;Lais Vasques;1996;171;70;275;274;Libero;Bresil
+23;Lyara Medeiros;1996;184;67;297;285;Passeuse;Bresil
+24;Maiara Basso;1996;186;80;287;276;Centrale;Bresil
+25;Nanami Hirose;1997;177;61;301;295;Pointue;Japon
+26;Misaki Shirai;1996;175;70;293;278;Passeuse;Japon
+27;Yurika Kono;1996;177;60;292;282;Centrale;Japon
+28;Yuka Kitsui;1997;172;60;294;283;Receptionneuse/attaquante;Japon
+29;Haruka Maruo;1996;176;64;293;283;Centrale;Japon
+30;Haruka Kanamori;1996;176;66;297;290;Centrale;Japon
+31;Moeri Hanai;1997;167;60;280;272;Libero;Japon
+32;Mizuki Yanagita;1996;168;64;300;290;Pointue;Japon
+33;Yuka Onodera;1997;173;70;293;283;Passeuse;Japon
+34;Shino Nakata;1997;178;66;287;284;Pointue;Japon
+35;Kaori Mabashi;1996;173;63;296;286;Pointue;Japon
+36;Anna Koike;1996;162;62;263;253;Pointue;Bulgarie
+37;Slavena Nikova;1996;180;72;290;280;Pointue;Bulgarie
+38;Elitsa Barakova;1997;184;60;290;280;Centrale;Bulgarie
+39;Polina Neykova;1998;182;73;287;280;Passeuse;Bulgarie
+40;Simona Nikolova;1997;190;75;308;300;Receptionneuse/attaquante;Bulgarie
+41;Iveta Stanchulova;1997;186;72;290;285;Centrale;Bulgarie
+42;Vangeliya Rachkovska;1997;185;67;296;281;Pointue;Bulgarie
+43;Gergana Dimitrova;1996;184;71;305;288;Pointue;Bulgarie
+44;Miroslava Paskova;1996;180;67;299;280;Pointue;Bulgarie
+45;Kristiana Petrova;1997;177;70;290;282;Pointue;Bulgarie
+46;Radostina Marinova;1998;183;62;287;279;Centrale;Bulgarie
+47;Zhana Todorova;1997;170;56;271;255;Libero;Bulgarie
+48;Mirela Shahpazova;1997;175;65;280;270;Passeuse;Bulgarie
+49;Jovana Kocic;1998;190;85;290;285;Centrale;Serbie
+50;Aleksandra Cirovic;1997;175;57;285;275;Passeuse;Serbie
+51;Sara Lozo;1997;186;61;295;290;Receptionneuse/attaquante;Serbie
+52;Katarina Marinkovic;1996;186;72;298;285;Pointue;Serbie
+53;Jelena Vignjevic;1996;180;63;285;280;Passeuse;Serbie
+54;Maja Aleksic;1997;188;72;290;285;Centrale;Serbie
+55;Katarina Lazovic;1999;182;65;285;275;Pointue;Serbie
+56;Bojana Milenkovic;1997;185;70;294;288;Pointue;Serbie
+57;Aleksandra Tadic;1997;174;60;270;265;Libero;Serbie
+58;Sara Vucicevic;1997;186;66;287;282;Centrale;Serbie
+59;Milena Dimic;1997;170;64;255;250;Libero;Serbie
+60;Marija Vujnovic;1997;182;65;290;276;Pointue;Serbie
+61;Leslie Angelica Lopez Flores;1996;169;78;198;190;Libero;Mexique
+62;Maria Fernanda Rodriguez Gomez;1997;185;80;287;280;Receptionneuse/attaquante;Mexique
+63;Janeth Alejandra Vargas Guevara;1997;169;68;200;210;Passeuse;Mexique
+64;Maria Elena Aguilera;1997;153;55;260;240;Passeuse;Mexique
+65;Kathya Paulina Garcia Chavez;1998;178;69;285;250;Pointue;Mexique
+66;Miriam Arleth Bojorquez Ruiz;1997;164;66;195;200;Pointue;Mexique
+67;Montserrat Castro Narvaez;1996;199;85;270;268;Centrale;Mexique
+68;Fernanda Banuelos;1997;186;70;303;285;Pointue;Mexique
+69;Kitzia Adonay Corrales Hernandez;1996;178;71;0;0;Receptionneuse/attaquante;Mexique
+70;Karina Angelica Flores Gamez;1998;192;80;299;285;Centrale;Mexique
+71;Mitzy Natalia Gonzalez Guzman;1997;168;75;211;209;Pointue;Mexique
+72;Alondra Amaro Rodriguez;1998;188;69;275;250;Centrale;Mexique
+73;Dalila Palma Rodriguez;1999;182;62;301;285;Receptionneuse/attaquante;Cuba
+74;Laura Beatriz Suarez Hernandez;1998;185;75;304;292;Centrale;Cuba
+75;Aidachi Attilah Aguero Aguilera;1999;177;69;304;295;Pointue;Cuba
+76;Claudia Hernandez Aguila;1997;181;78;225;223;Pointue;Cuba
+77;Diaris De La Caridad Perez Ramos;1998;182;75;304;295;Pointue;Cuba
+78;Kitania Medina Torres;1999;186;77;308;295;Receptionneuse/attaquante;Cuba
+79;Ailama Cese Montalvo;2000;188;58;322;308;Pointue;Cuba
+80;Liset Herrera Blanco;1998;192;70;311;300;Centrale;Cuba
+81;Anaila Martinez Chaviano;1999;184;70;320;310;Passeuse;Cuba
+82;Carmela Massip Mursuli;1998;181;65;304;295;Pointue;Cuba
+83;Sonia Beatriz Romero Espinosa;1997;183;70;301;288;Passeuse;Cuba
+84;Anet Alfonso Benitez;1996;172;54;225;222;Receptionneuse/attaquante;Cuba
+85;Haiping Sun;1996;180;65;300;292;Passeuse;China
+86;Mingyuan Hu;1996;187;69;305;297;Centrale;China
+87;Zixuan Meng;1996;180;62;298;290;Libero;China
+88;Ye Jin;1996;187;77;310;302;Pointue;China
+89;Qingqing Du;1996;189;72;312;300;Pointue;China
+90;Qian Zhang;1997;193;70;313;302;Centrale;China
+91;Jiayi Huang;1996;173;60;285;275;Libero;China
+92;Wanqianbai Rong;1997;184;75;304;297;Passeuse;China
+93;Yuanyuan Wang;1997;195;75;312;300;Centrale;China
+94;Xiangyu Gong;1997;186;72;313;302;Receptionneuse/attaquante;China
+95;Xinyi Zhou;1997;187;69;307;300;Pointue;China
+96;Yi Yang;1997;184;70;308;300;Receptionneuse/attaquante;China
+97;Mayar Mohamed;2000;186;78;288;279;Centrale;Egypte
+98;Mai Moustafa;1996;175;63;280;269;Pointue;Egypte
+99;Salma Mahmoud;1999;175;56;278;266;Pointue;Egypte
+100;Nourallah Amin;2000;184;70;285;276;Centrale;Egypte
+101;Malak Badawy;1996;175;64;273;289;Receptionneuse/attaquante;Egypte
+102;Mariam Ebrahim;1997;167;63;273;261;Passeuse;Egypte
+103;Rahma Almohandes;1996;175;63;277;265;Pointue;Egypte
+104;Yasmin Hussein;1997;175;74;188;178;Pointue;Egypte
+105;Hend Farag;1997;186;68;277;272;Centrale;Egypte
+106;Icel Nadim;1996;162;52;253;267;Libero;Egypte
+107;Jailan Tawfik;1997;175;65;292;279;Receptionneuse/attaquante;Egypte
+108;Rania Ashmawy;1996;174;67;273;264;Passeuse;Egypte
+109;Diana De La Pena;1999;187;60;294;295;Centrale;Perou
+110;Nair Canessa;1997;185;70;295;298;Centrale;Perou
+111;Nicole Abreu Erquinigo;1999;180;63;285;270;Pointue;Perou
+112;Cristina Cuba;1996;176;65;280;275;Passeuse;Perou
+113;Shiamara Almeida;1996;172;62;286;275;Passeuse;Perou
+114;Maguilaura Frias;1997;186;71;291;280;Receptionneuse/attaquante;Perou
+115;Katherine Regalado;1998;190;66;296;287;Receptionneuse/attaquante;Perou
+116;Rosa Valiente;1996;183;60;290;295;Centrale;Perou
+117;Angela Leyva;1996;184;70;312;291;Pointue;Perou
+118;Yomira Villacorta;1996;164;61;265;250;Libero;Perou
+119;Dayana Rojas;1997;160;55;178;180;Pointue;Perou
+120;Coraima Gomez;1996;179;70;300;285;Pointue;Perou
+121;Ilaria Bonvicini;1997;160;52;261;243;Pointue;Italie
+122;Carlotta Cambi;1996;177;66;302;292;Passeuse;Italie
+123;Sofia D'odorico;1997;187;78;312;302;Pointue;Italie
+124;Alessia Orro;1998;180;74;308;231;Passeuse;Italie
+125;Sara Bonifacio;1996;188;76;320;300;Centrale;Italie
+126;Anna Danesi;1996;195;75;312;246;Centrale;Italie
+127;Anastasia Guerra;1996;187;80;314;239;Pointue;Italie
+128;Chiara De Bortoli;1997;180;68;302;286;Libero;Italie
+129;Paola Ogechi Egonu;1998;190;70;336;256;Receptionneuse/attaquante;Italie
+130;Beatrice Berti;1996;193;87;304;288;Centrale;Italie
+131;Anna Nicoletti;1996;193;86;306;290;Receptionneuse/attaquante;Italie
+132;Elisa Zanette;1996;193;86;304;288;Receptionneuse/attaquante;Italie
+133;Melis Yilmaz;1997;165;52;260;259;Libero;Turquie
+134;Cansu Ozbay;1996;182;75;285;284;Passeuse;Turquie
+135;Ayca Aykac;1996;176;54;280;279;Libero;Turquie
+136;Rida Erlalelitepe;1996;183;70;293;290;Pointue;Turquie
+137;Ada Germen;1997;182;62;285;283;Pointue;Turquie
+138;Zehra Gunes;1999;194;82;309;255;Centrale;Turquie
+139;Humay Topaloglu;1996;180;63;295;293;Pointue;Turquie
+140;Yagmur Mislina Kilic;1996;189;66;283;280;Pointue;Turquie
+141;Cemre Janset Erkul;1997;184;65;298;295;Centrale;Turquie
+142;Arelya Karasoy;1996;181;73;287;280;Passeuse;Turquie
+143;Arelya Karasoy;1996;181;73;287;280;Passeuse;Turquie
+144;Su Zent;1996;184;70;305;303;Centrale;Turquie
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
+;;;;;;;;
