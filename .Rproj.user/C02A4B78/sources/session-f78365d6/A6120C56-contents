@@ -12,7 +12,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-Les données sont prises de https://www.kaggle.com/ et representent les joueuse de volleyball et leurs caractéristiques.
+Les données sont prises de https://www.kaggle.com/ .
+Les données concernent les joueuses de volleyball et contiennent des informations sur leur date de naissance, leur taille, leur poids, leur hauteur de saut (spike), leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
 
+La date de naissance, la taille et le poids sont des caractéristiques physiques des joueuses qui peuvent avoir une incidence sur leurs performances. La hauteur de saut (spike) et de bloc sont également des facteurs importants dans le volleyball, car ils mesurent la capacité d'une joueuse à attaquer et à défendre. Le poste de jeu de la joueuse est également une information importante, car chaque poste a des responsabilités et des rôles différents sur le terrain. Enfin, le pays d'origine peut également avoir une incidence sur le style de jeu et le niveau de compétition des joueuses.
 
+En utilisant ces données, il est possible de mener des analyses statistiques pour étudier la relation entre ces caractéristiques et les performances des joueuses sur le terrain, ainsi que pour étudier les différences entre les joueuses de différents pays et postes de jeu. Ces informations peuvent être utiles pour les entraîneurs et les recruteurs pour sélectionner les joueuses les plus adaptées à leur équipe, ainsi que pour les chercheurs qui s'intéressent aux facteurs qui influencent les performances sportives.
 
+## Chargement de données 
