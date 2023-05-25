@@ -19,6 +19,13 @@ La date de naissance, la taille et le poids sont des caractéristiques physiques
 
 En utilisant ces données, il est possible de mener des analyses statistiques pour étudier la relation entre ces caractéristiques et les performances des joueuses sur le terrain, ainsi que pour étudier les différences entre les joueuses de différents pays et postes de jeu. Ces informations peuvent être utiles pour les entraîneurs et les recruteurs pour sélectionner les joueuses les plus adaptées à leur équipe, ainsi que pour les chercheurs qui s'intéressent aux facteurs qui influencent les performances sportives.
 
+## Variables pour l'analyse
+
+Nous allons effectuer une analyse statistique des données fournies, en commençant par comparer les fréquences des nationalités des joueuses. Ensuite, nous étudierons les capacités et aptitudes des joueuses, à savoir la hauteur maximale d'attaque et la hauteur maximale de blocage, en fonction de leur poste. Ces deux variables sont qualitatives.
+
+Pour approfondir cette étude, nous analyserons également les aptitudes des joueuses en fonction de leurs postes. Cette analyse portera sur des variables quantitatives, ce qui nous permettra d'explorer plus en détail les différences et les tendances entre les postes occupés par les joueuses.
+
+
 ## Chargement de données 
 
 ```{r}
@@ -27,3 +34,12 @@ url <- "women_vb.csv"
 data <- read.csv(url,sep=';', header=TRUE)
 
 ```
+
+
+## Analyse univariée
+
+```{r}
+
+
+```
+`

@@ -1,4 +1,0 @@
-"0",""
-"0","url <- ""women_vb.csv"""
-"0","data <- read.csv(url,sep=';', header=TRUE)"
-"0",""
