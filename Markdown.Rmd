@@ -42,4 +42,35 @@ data <- read.csv(url,sep=';', header=TRUE)
 
 
 ```
-`
+
+Nous avons remarqué grâce à l'analyse ci-dessous, qu'il y avait une donnée erronée dans notre jeu de données puisqu'il y avait une joueuse qui avait une hauteur de block à 0. Nous avons donc fait le choix de retirer cette joueuse du jeu de données.
+
+## Analyse univariée sur la hauteur de block 
+```{r}
+block <- data$block
+moyenne <- mean(block)
+print(paste("La hauteur moyenne de block est de", round(moyenne, 2)))
+variance <- var(block)
+print(paste("La variance de la hauteur de block est de", round(variance, 2)))
+
+# Analyse gaussienne
+par(mfrow=c(1,2))
+hist(block , main="Répartition de la hauteur de block ",xlab="Hauteur de block (en cm)",prob=T)
+curve(dnorm(x, mean(block), sd(block)), col=2, add=TRUE, lty=2)
+qqnorm(block)
+qqline(block, col=2)
+
+# Calcul de l'intervalle de confiance à 95% pour la moyenne
+intervalle_de_confiance <- t.test(block)$conf.int
+print(intervalle_de_confiance)
+
+# Calcul de la proportion de blocs supérieurs à 280
+proportion <- length(block[block > 280]) / length(block)
+print(paste("La proportion de block dont la valeur est supérieure à 280 est de", proportion*100, "%"))
+
+# Calcul de l'intervalle de confiance à 95% pour la proportion
+int_confiance_prop <- prop.test(sum(block > 280), length(block))$conf.int
+print(int_confiance_prop)
+```
+
+Dans l'analyse 
