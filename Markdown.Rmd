@@ -1,8 +1,8 @@
 ---
 title: "Projet Stats"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 date: "2023-05-05"
 ---
 
@@ -36,12 +36,39 @@ data <- read.csv(url,sep=';', header=TRUE)
 ```
 
 
-## Analyse univariée
+## Analyse univariée sur le pays de naissance des joueuses
 
+
+Nous allons d'abord analyser la fréquence des pays de naissance des joueuses 
 ```{r}
 
+pays <- data['pays']
+barplot(table(pays), main = "Pays de naissance", xlab = "Nombre d'occurences", ylab = "Diagramme à batôns")
 
 ```
+
+
+
+Sur ce diagramme en batôns nous obsevons que la fréquence de la plupart des pays de naissance des joueuses est égale à 12. Il n'y a que la Japon et Mexique qui sont les pays de naissance de 11 joueuse et la Bulgarie avec le maximum de ce diagramme : 13.
+
+Pour approfondir cette analyse nous allons étudier les aptitudes des joueuses en fonction de leur pays de naissance:
+
+```{r}
+pays <-data$pays
+attaque <- data$attaque
+
+boxplot(attaque ~ pays, main = "Box Plot des performamce d'attaque des joueuses en fontion de leur pays de naissance", xlab = "Pays de naissance", ylab = "Performance d'attaque")
+```
+
+Sur cette boîte à moustache nous constatons que le pays avec la plus grande variance des aptitudes des joueuse est le Mexique. On y retrouve également les pays avec la meilleure performance qui est l'Italie. 
+
+
+
+```{r}
+moyenne_par_pays <- aggregate(attaque, by = list(pays), FUN = mean)
+barplot(moyenne_par_pays$x, names.arg = moyenne_par_pays$Group.1, main = "Moyenne de la hauteur de l'attaque des joueuses par pays", xlab = "Pays", ylab = "La moyenne")
+```
+// TODO : commenter le résultat
 
 Nous avons remarqué grâce à l'analyse ci-dessous, qu'il y avait une donnée erronée dans notre jeu de données puisqu'il y avait une joueuse qui avait une hauteur de block à 0. Nous avons donc fait le choix de retirer cette joueuse du jeu de données.
 
