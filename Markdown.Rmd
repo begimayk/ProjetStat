@@ -51,6 +51,15 @@ barplot(table(pays), main = "Pays de naissance", xlab = "Nombre d'occurences", y
 
 Sur ce diagramme en batôns nous obsevons que la fréquence de la plupart des pays de naissance des joueuses est égale à 12. Il n'y a que la Japon et Mexique qui sont les pays de naissance de 11 joueuse et la Bulgarie avec le maximum de ce diagramme : 13.
 
+```{r}
+pays_freq <- table(pays)
+pie(pays_freq, labels = names(pays_freq), col = rainbow(length(pays_freq)))
+title("Les pays de naissance des joueuses")
+par(mar = c(1, 1, 1, 1))
+```
+// COMMENTER (pour voir tous les pays)
+
+
 Pour approfondir cette analyse nous allons étudier les aptitudes des joueuses en fonction de leur pays de naissance:
 
 ```{r}
