@@ -73,4 +73,32 @@ int_confiance_prop <- prop.test(sum(block > 280), length(block))$conf.int
 print(int_confiance_prop)
 ```
 
+## Analyse univariée sur la taille des joueuses 
+```{r}
+taille <- data$taille
+moyenne <- mean(taille)
+print(paste("La taille moyenne d'une joueuse est de", round(moyenne, 2)))
+variance <- var(taille)
+print(paste("La variance de la taille des joueuses est de", round(variance, 2)))
+
+# Analyse gaussienne
+par(mfrow=c(1,2))
+hist(taille , main="Répartition de la taille des joueuses",xlab="Taille des joueuses (en cm)",prob=T)
+curve(dnorm(x, mean(taille), sd(taille)), col=2, add=TRUE, lty=2)
+qqnorm(taille)
+qqline(taille, col=2)
+
+# Calcul de l'intervalle de confiance à 95% pour la moyenne
+intervalle_de_confiance <- t.test(taille)$conf.int
+print(intervalle_de_confiance)
+
+# Calcul de la proportion de joueuses mesurant plus de 185 cm
+proportion <- length(taille[taille > 185]) / length(taille)
+print(paste("La proportion de joueuses mesurant plus de 185 cm est de", round(proportion*100, 2), "%"))
+
+# Calcul de l'intervalle de confiance à 95% pour la proportion
+int_confiance_prop <- prop.test(sum(taille > 185), length(taille))$conf.int
+print(int_confiance_prop)
+```
+
 Dans l'analyse 
