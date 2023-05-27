@@ -186,4 +186,25 @@ int_confiance_prop <- prop.test(sum(taille > 185), length(taille))$conf.int
 print(int_confiance_prop)
 ```
 
-Dans l'analyse 
+
+
+## Analyse multivariée 
+# Quanti x quali
+
+```{r}
+poste <- data$poste
+block <- data$block
+tableau <- data.frame(colonne1 = colonne1, colonne2=colonne2)
+print(tableau)
+
+boxplot(block~poste)
+
+```
+
+Au vu des résultats ci-dessus, nous pouvons constater qu'il y a une nette différence entre 2 postes : les centrales et les liberos. Cette différence peut s'expliquer par le fait que le poste de libero est un poste où la joueuse ne reste que sur les bases arrières, c'est-à-dire qu'elle ne se trouve jamais devant le filet et n'a donc pas besoin de compétences particulières sur le côté détente verticale, tandis que les centrales à l'opposé des liberos ne font aucun poste arrière et sont présentes que sur les bases avant, donc uniquement devant le filet, et un des buts premier de leur poste est de bloquer les attaquantes adverses, d'où la nécessité pour elle d'avoir la meilleure hauteur au block.
+Nous allons donc continuer notre analyse sur ces 2 sous groupes (centrales, liberos).
+
+```{r}
+
+
+```
