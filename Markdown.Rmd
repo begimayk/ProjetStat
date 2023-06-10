@@ -20,6 +20,8 @@ if (!require(ggplot2)) {
 ```
 ## Introduction
 
+### Données
+
 Les données sont prises de https://www.kaggle.com/ .
 Les données concernent les joueuses de volleyball et contiennent des informations sur leur date de naissance, leur taille, leur poids, leur hauteur de saut (spike), leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
 
@@ -27,106 +29,188 @@ La date de naissance, la taille et le poids sont des caractéristiques physiques
 
 En utilisant ces données, il est possible de mener des analyses statistiques pour étudier la relation entre ces caractéristiques et les performances des joueuses sur le terrain, ainsi que pour étudier les différences entre les joueuses de différents pays et postes de jeu. Ces informations peuvent être utiles pour les entraîneurs et les recruteurs pour sélectionner les joueuses les plus adaptées à leur équipe, ainsi que pour les chercheurs qui s'intéressent aux facteurs qui influencent les performances sportives.
 
-## Variables pour l'analyse
-
-Nous allons effectuer une analyse statistique des données fournies, en commençant par comparer les fréquences des nationalités des joueuses. Ensuite, nous étudierons les capacités et aptitudes des joueuses, à savoir la hauteur maximale d'attaque et la hauteur maximale de blocage, en fonction de leur poste. Ces deux variables sont qualitatives.
-
-Pour approfondir cette étude, nous analyserons également les aptitudes des joueuses en fonction de leurs postes. Cette analyse portera sur des variables quantitatives, ce qui nous permettra d'explorer plus en détail les différences et les tendances entre les postes occupés par les joueuses.
-
-
-## Chargement de données 
+### Chargement de données 
 
 ```{r}
 
 url <- "women_vb.csv"
 data <- read.csv(url,sep=';', header=TRUE)
 
-```
-
-
-## Analyse univariée sur les pays de naissance des joueuses
-
-
-Nous allons d'abord analyser les effectifs des pays de naissance des joueuses 
-```{r}
-
-pays <- data['pays']
-
-ggplot(data, aes(x = pays)) +
-  geom_bar(fill = "skyblue") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Pays de naissances", y = "Effectifs")
+attach(data)
 
 ```
+### Modififcations apportées aux données 
 
-#### Quelles conclusions nous pouvons faire?
 
-Sur ce diagramme en batôns nous obsevons que la fréquence de la plupart des pays de naissance des joueuses est égale à 12. Il n'y a que la Japon et Mexique qui sont les pays de naissance de 11 joueuse et la Bulgarie avec le maximum de ce diagramme : 13.
 
-### Un diagramme en camembert des pays de naissance
+Voici le fichier de donées de départ : https://www.kaggle.com/datasets/johnpendenque/women-volleyball-players.
+Afin de mieux organiser ces données, nous avons effectué une transformation en remplaçant les codes des pays d'origine des joueuses ainsi que les codes de leurs postes par les noms correspondants. Cela a été réalisé dans le but de rendre les données plus compréhensibles et faciles à interpréter.
 
+
+### Variables pour l'analyse
+
+
+Nous allons effectuer une analyse statistique des données fournies, en commençant par comparer les fréquences des nationalités des joueuses. Ensuite, nous étudierons les capacités et aptitudes des joueuses, à savoir la hauteur maximale d'attaque et la hauteur maximale de blocage, en fonction de leur poste. Ces deux variables sont qualitatives.
+
+Pour approfondir cette étude, nous analyserons également les aptitudes des joueuses en fonction de leurs postes. Cette analyse portera sur des variables quantitatives, ce qui nous permettra d'explorer plus en détail les différences et les tendances entre les postes occupés par les joueuses.
+
+
+## Analyse univariée
+
+
+### Pays de naissance des joueuses
+
+Nous allons commencer par effectuer une analyse des pays de naissance des joueuses, qui représente une variable _qualitative discrète_. 
+
+
+##### Tri à plat
+Pour résumer l'information contenue dans la variable nous commençons par un _tri à plat_
 ```{r}
-
 # Calculer les effectifs de chaque pays
 pays_eff <- table(pays)
+```
 
-# Calculer les pourcentages the percentages
-pays_percentages <- prop.table(pays_eff) * 100
 
-# Create a color palette for the pie slices
+### Répartition des données
+
+```{r}
+
+# Créer les couleurs
 pale_colors <- c("#F2B5D4", "#B8E3E6", "#FFDB9A", "#B3D9B2", "#FAC8A7", "#D7D7E0",
                 "#F9E6B8", "#B7C9E2", "#F1C2DC", "#C9E8C9", "#FFE4C4", "#D0E0EB")
 
-
 # Créer le diagramme en camembert
-pie(pays_eff, labels = paste(names(pays_eff), "(", sprintf("%.1f%%", pays_percentages), ")"), col = pale_colors)
+pie(pays_eff, paste(names(pays_eff), "(", formatC(pays_eff, format = "f", digits = 0), ")", sep = ""), col = pale_colors)
 
-# Add a legend
+# Ajouter la legende
 legend("topright", legend = names(pays_eff), fill = pale_colors, cex = 0.8)
 
 ```
-// COMMENTER (pour voir tous les pays)
 
 
-Pour approfondir cette analyse nous allons étudier les aptitudes des joueuses en fonction de leur pays de naissance:
+En analysant ce diagramme, il est clair que la plupart des pays de naissance des joueuses ont une fréquence de 12, ce qui signifie qu'il y a un nombre égal de joueuses nées dans ces pays. Cependant, il y a deux exceptions à cette tendance : le Japon et le Mexique, qui sont les pays de naissance de 11 joueuses chacun.
+
+Il est intéressant de noter que la Bulgarie présente la fréquence maximale dans ce diagramme, avec 13 joueuses nées dans ce pays. Cela indique que la Bulgarie est le pays d'origine le plus représenté parmi les joueuses.
+
+
+### Hauteur d'attaque des joueueses
+
+```{r}
+# Calcul de la fonction de répartition empirique
+ecdf_attaque <- ecdf(attaque)
+
+# Tracé de la fonction de répartition empirique
+plot(ecdf_attaque, main = "Fonction de répartition empirique - Attaque", xlab = "Attaque", ylab = "Probabilité", xlim = range(attaque))
+
+```
+
+
+Les nombreux sauts de petite taille observés dans la variable suggèrent fortement que cette variable _quantitative_ est _continue_.
+
+Étant donné que la variable en question est continue, il est approprié de réaliser un regroupement en classes des données.
+```{r}
+# Regroupement en classes
+classes_attaque <- cut(attaque,breaks = c(100, 200, 300, 400))
+
+# Affichage des classes
+print(classes_attaque)
+```
+Dans le cadre de notre analyse, nous supposons que les points de données au sein de chaque classe sont répartis uniformément.
+
+#### Mesures de position
+```{r}
+boxplot(attaque, main="La hauteur d'attaque des joueuses de volley")
+```
+
+
+En observant ce diagramme, on peut clairement distinguer la valeur minimale, les quartiles, la médiane et la valeur maximale.
+
+Voici ces valeurs 
+```{r}
+summary(attaque)
+```
+
+### Probabilité et estimations 
+
+#### Estimation de moyenne
+
+```{r}
+interval=t.test(attaque)
+interval$conf.int
+mean(attaque)
+```
+
+Nous pouvons estimer que la moyenne de l'attaque se situe dans l'intervalle [284.5521, 293.0283] avec un niveau de confiance de 95%.
+
+
+#### Estimation de variance 
+```{r}
+# Calcul de l'intervalle de confiance pour la variance
+n <- length(attaque)  # Taille de l'échantillon
+alpha <- 0.05  # Niveau de confiance (ici 95%)
+
+lower_bound <- (n - 1) * var(attaque) / qchisq(1 - alpha/2, df = n - 1)
+upper_bound <- (n - 1) * var(attaque) / qchisq(alpha/2, df = n - 1)
+
+# Affichage de l'intervalle de confiance
+confidence_interval <- c(lower_bound, upper_bound)
+confidence_interval
+var(attaque)
+```
+De même nous estimons que la variance de la hauteur d'attaque des joueuses se situe dans l'intervalle [527.6508 841.5602] avec un niveau de confiance de 95%.
+
+#### Comparaison à la loi normale
+
+```{r}
+par(mfrow=c(1,2))
+hist(attaque , main="Repartition de la hauteur d'attaque ",xlab="La hauteur d'attaque",prob=T)
+curve(dnorm(x, mean(attaque), sd(attaque)), col=2, add=TRUE, lty=2)
+
+qqnorm(attaque, main = "La loi normale", xlab = "Théorique", ylab = "Observé")
+abline(mean(attaque),sd(attaque),col=2)
+```
+
+Sur ce graphique, nous pouvons observer que la distribution de la variable d'attaque s'approche à loi normale.
+
+Pour valider notre estimations, nous procéderons aux tests statistiques.
+
+#### Test de la normalité de distribution
+
+Les hypothèses sont les suivantes :
+
+* H0 : La variable suit pas la loi normale 
+* H1 : La variable ne suit la loi normale
+```{r}
+shapiro.test(attaque)
+```
+La p valeur du test est extrêmement faible, soit 1.619e-13, ce qui indique que nous avons suffisamment de preuves pour rejeter l'hypothèse nulle  H0 selon laquelle les données suivent une distribution normale.
+
+
+## Analyse bivariée
+
+### Hauteur d'attaque des joueuses de volleyball selon leur pays de naissance
+
+Après avoir étudié les pays de naissance des joueuses, nous pouvons désormais analyser d'autres données spécifiques en les associant à leur pays d'origine.
+
+La hauteur d'attaque des joueuses est une variable _quantitative continue_, tandis que leur pays de naissance est une variable _qualitative discrète_.
 
 ```{r}
 attaque<-data$attaque
 
 ggplot(data, aes(x = pays, y = attaque)) +
   geom_boxplot() +
-  labs(title = "Box Plot de la hauteur d'attaque des joueuses en fonction de leur pays de naissance",
+  labs(title = "La hauteur d'attaque moyenne des joueuses en fonction de leur pays de naissance",
        x = "Pays de naissance",
        y = "La hauteur d'attaque") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
-Sur cette boîte à moustache nous constatons que le pays avec la plus grande variance des aptitudes des joueuse est le Mexique. On y retrouve également les pays avec la meilleure hauteur d'attaque qui est l'Italie. 
-// TODO : commenter le résultat
-```{r}
-# Calculate variances for 'attaques' by country
-variances <- aggregate(attaque ~ pays, data = data, FUN = var)
-means <- aggregate(attaque ~ pays, data = data, FUN = mean)
-# Print the resulting variances
-print(variances)
-print(means)
-```
-// faire analyse des variance et les moyennes 
+Sur ce diagramme en boîte à moustaches, nous pouvons observer les quartiles et la moyenne de la hauteur d'attaque des joueuses en fonction de leur pays de naissance. Les quartiles représentent la répartition des valeurs de la hauteur d'attaque, tandis que la ligne centrale dans la boîte indique la médiane.
 
 
 
-```{r}
-moyenne_attaque <- aggregate(attaque ~ pays, data = data, FUN = mean)
 
-# Sort the countries by mean attack in descending order
-moyenne_attaque <- moyenne_attaque[order(-moyenne_attaque$attaque), ]
-
-# Create a bar plot using ggplot
-ggplot(moyenne_attaque, aes(x = pays, y = attaque)) +
-  geom_bar(stat = "identity", fill = "lightblue") +
-  labs(title = "Mean Attack by Country", x = "Country", y = "Mean Attack")
-```
 
 Nous avons remarqué grâce à l'analyse ci-dessous, qu'il y avait une donnée erronée dans notre jeu de données puisqu'il y avait une joueuse qui avait une hauteur de block à 0. Nous avons donc fait le choix de retirer cette joueuse du jeu de données.
 
@@ -192,12 +276,7 @@ print(int_confiance_prop)
 # Quanti x quali
 
 ```{r}
-poste <- data$poste
-block <- data$block
-tableau <- data.frame(colonne1 = colonne1, colonne2=colonne2)
-print(tableau)
 
-boxplot(block~poste)
 
 ```
 
