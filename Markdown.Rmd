@@ -178,8 +178,8 @@ Pour valider notre estimations, nous procéderons aux tests statistiques.
 
 Les hypothèses sont les suivantes :
 
-* H0 : La variable suit pas la loi normale 
-* H1 : La variable ne suit la loi normale
+* H0 : La variable ne suit pas la loi normale 
+* H1 : La variable suit la loi normale
 ```{r}
 shapiro.test(attaque)
 ```
@@ -190,9 +190,10 @@ La p valeur du test est extrêmement faible, soit 1.619e-13, ce qui indique que 
 
 ### Hauteur d'attaque des joueuses de volleyball selon leur pays de naissance
 
-Après avoir étudié les pays de naissance des joueuses, nous pouvons désormais analyser d'autres données spécifiques en les associant à leur pays d'origine.
+Après avoir étudié les pays de naissance des joueuses et leurs hauteurs d'attaque, nous pouvons désormais analyser la hauteur d'attaque selon le pays de naissance des joueuses.
 
 La hauteur d'attaque des joueuses est une variable _quantitative continue_, tandis que leur pays de naissance est une variable _qualitative discrète_.
+
 
 ```{r}
 attaque<-data$attaque
@@ -206,7 +207,56 @@ ggplot(data, aes(x = pays, y = attaque)) +
 
 ```
 
-Sur ce diagramme en boîte à moustaches, nous pouvons observer les quartiles et la moyenne de la hauteur d'attaque des joueuses en fonction de leur pays de naissance. Les quartiles représentent la répartition des valeurs de la hauteur d'attaque, tandis que la ligne centrale dans la boîte indique la médiane.
+Ce graphique en boîte permet d'observer les quartiles et la médiane de la hauteur d'attaque des joueuses des différents sous-groupes, représentés par leur nationalité. Chaque boîte représente la distribution de la hauteur d'attaque pour un pays spécifique.
+
+Maintenant que nous avons examiné les résultats graphiques, nous pouvons utiliser ces données pour effectuer des tests statistiques. Voici les tests que nous effectuerons en utilisant les résultats de la hauteur d'attaque des différentes nationalités :
+
+* Test de comparaison de moyennes : Sur le graphique, nous remarquons une similitude des moyennes de la hauteur d'attaque entre la Chine et Cuba. Afin de vérifier si cette similitude est statistiquement significative, nous allons effectuer un test d'égalité des moyennes entre ces deux pays.
+* Test de comparaison de variances : De même nous observons une similarité entre les variances enre la Cuba et l'Egypte, nous allons donc effectuer un test d'égalité des moyennes pour ces deux pays et ensuite un test d'égalité des variances.
+
+
+#### Tests statistiques 
+
+* Test d'égalité des moyennes de la hauteur d'attaque entre la Chine et la Cuba. Les hypothèses sont les suivantes 
+
+  + H0 Les moyennes sont égales
+  + H1 Les moyenne sont différentes
+
+ 
+
+```{r}
+attaque_cuba <- attaque[pays == "Cuba"]
+attaque_china <- attaque[pays == "China"]
+t.test(attaque_cuba, attaque_china)
+```
+
+La p-valeur est grande (26,32%) par rapport au risque de 5% de se tromper. Nous pouvons donc accepter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales et rejetter l'hypothèse H1 selon laquelle les deux moyennes sont différentes. Nous constatons également que la différence entre ces deux moyennes se trouve dans l'intervalle [-32.8, 9.8] avec un niveau de confiance de 95%.
+
+
+* Test d'égalité des moyennes de la hauteur d'attaque entre la Cuba et la Cuba et l'Égypte. Les hypothèses sont les suivantes 
+
+  + H0 Les moyennes sont égales
+  + H1 Les moyenne sont différentes
+
+```{r}
+attaque_egypt <- attaque[pays == "Egypte"]
+t.test(attaque_cuba, attaque_egypt)
+```
+La p-valeur est plus petite que dans le premier test mais elle reste supérieure au risque de 5%. Nous n'avons donc pas suffisament de preuve pour rejetter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales par consequent nous l'acceptons. Nous observons que la différence entre ces deux moyennes se trouve dans l'intervalle [-1.4, 50.1] avec un niveau de confiance de 95%.
+
+Vu que nous supposons que les moyennes sont égales 
+
+
+//// Pour analyse qualixquali
+####  Tableau de contingence
+```{r}
+# Création du tableau de contingence
+table_contingence <- table(pays, poste)
+
+# Affichage du tableau de contingence
+print(table_contingence)
+```
+
 
 
 
