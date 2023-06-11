@@ -178,8 +178,8 @@ Pour valider notre estimations, nous procéderons aux tests statistiques.
 
 Les hypothèses sont les suivantes :
 
-* H0 : La variable ne suit pas la loi normale 
-* H1 : La variable suit la loi normale
+* H0 : La variable suit la loi normale 
+* H1 : La variable ne suit pas la loi normale
 ```{r}
 shapiro.test(attaque)
 ```
@@ -222,7 +222,8 @@ Maintenant que nous avons examiné les résultats graphiques, nous pouvons utili
   + H0 Les moyennes sont égales
   + H1 Les moyenne sont différentes
 
- 
+
+##### Tests d'égalité des moyennes
 
 ```{r}
 attaque_cuba <- attaque[pays == "Cuba"]
@@ -233,21 +234,53 @@ t.test(attaque_cuba, attaque_china)
 La p-valeur est grande (26,32%) par rapport au risque de 5% de se tromper. Nous pouvons donc accepter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales et rejetter l'hypothèse H1 selon laquelle les deux moyennes sont différentes. Nous constatons également que la différence entre ces deux moyennes se trouve dans l'intervalle [-32.8, 9.8] avec un niveau de confiance de 95%.
 
 
-* Test d'égalité des moyennes de la hauteur d'attaque entre la Cuba et la Cuba et l'Égypte. Les hypothèses sont les suivantes 
+##### Tests d'égalité des variances
+
+
+Pour effectuer des tests d'égalité des variances, il est recommandé de vérifier d'abord l'adéquation à la distribution normale des échantillons concernés. Dans notre cas, nous avons deux sous-groupes : Cuba et Égypte. Nous allons donc procéder à des tests de normalité pour ces deux groupes.
+
+Les hypothèses sont les suivantes 
+
+* H0 : La variable suit la loi normale
+* H1 : La variable ne suit pas la loi normale 
+
+```{r}
+hist(data[data$pays == "Cuba", "attaque"])
+shapiro.test(data[data$pays == "Cuba", "attaque"])
+hist(data[data$pays == "Egypte", "attaque"])
+shapiro.test(data[data$pays == "Egypte", "attaque"])
+```
+Pour les deux tests la p-valeur obtenue est petite, donc nous ne pouvons pas rejjeter l'hypothèse nulle selon laquelle la variable suit la loi normale. Nous supposons donc par la suite que ces deux échantillons ne suivent pas une distribution normale.
+
+Vu que nos échantillons ne suivent pas une distribution normale de ces deux échantillon avec un test Fisher
+
+* Test d'égalité des variance entre la Cuba et l'Egypte 
+
+  + H0 Les variances sont égales
+  + H1 Les variances sont différentes
+  
+````{r}
+attaque_egypt <- attaque[pays == "Egypte"]
+var.test(attaque_cuba, attaque_egypt)
+````
+La p-valeur est petite mais légérement plus grande que le risque de 5% nous ne pouvons donc pas rejetter l'hypothèse nulle selon laquelle les variances sont égales.
+
+Nous supposons dans la suite que les variances de ces deux échantillons sont égales.
+
+
+* Test d'égalité des moyennes de la hauteur d'attaque entre la Cuba et l'Égypte. Les hypothèses sont les suivantes 
 
   + H0 Les moyennes sont égales
   + H1 Les moyenne sont différentes
 
 ```{r}
-attaque_egypt <- attaque[pays == "Egypte"]
-t.test(attaque_cuba, attaque_egypt)
+t.test(attaque_cuba, attaque_egypt, var.equal = T)
 ```
-La p-valeur est plus petite que dans le premier test mais elle reste supérieure au risque de 5%. Nous n'avons donc pas suffisament de preuve pour rejetter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales par consequent nous l'acceptons. Nous observons que la différence entre ces deux moyennes se trouve dans l'intervalle [-1.4, 50.1] avec un niveau de confiance de 95%.
-
-Vu que nous supposons que les moyennes sont égales 
+La p-valeur est plus petite que dans le premier test mais elle reste supérieure au risque de 5%. Nous n'avons donc pas suffisament de preuve pour rejetter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales par consequent nous l'acceptons. Nous observons que la différence entre ces deux moyennes se trouve dans l'intervalle [-1.38, 50.05] avec un niveau de confiance de 95%.
 
 
-//// Pour analyse qualixquali
+### Les postes des joueuses selon leur pays de naisssance
+
 ####  Tableau de contingence
 ```{r}
 # Création du tableau de contingence
@@ -257,9 +290,21 @@ table_contingence <- table(pays, poste)
 print(table_contingence)
 ```
 
+````{r}
+df <- as.data.frame.table(table_contingence)
+
+# Renommer les colonnes du data frame
+colnames(df) <- c("Pays", "Poste", "Effectif")
+
+# Création du graphique en barres
+ggplot(df, aes(x = Pays, y = Effectif, fill = Poste)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(x = "Pays", y = "Effectif", fill = "Poste") +
+  theme_minimal()
+````
 
 
-
+// commenter
 
 
 Nous avons remarqué grâce à l'analyse ci-dessous, qu'il y avait une donnée erronée dans notre jeu de données puisqu'il y avait une joueuse qui avait une hauteur de block à 0. Nous avons donc fait le choix de retirer cette joueuse du jeu de données.
