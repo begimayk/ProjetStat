@@ -454,8 +454,8 @@ maximale dans ce diagramme, avec 13 joueuses nées dans ce pays. Cela
 indique que la Bulgarie est le pays d’origine le plus représenté parmi
 les joueuses.</p>
 </div>
-<div id="hauteur-dattaque-des-joueueses" class="section level3">
-<h3>Hauteur d’attaque des joueueses</h3>
+<div id="hauteur-dattaque-des-joueuses" class="section level3">
+<h3>Hauteur d’attaque des joueuses</h3>
 <pre class="r"><code># Calcul de la fonction de répartition empirique
 ecdf_attaque &lt;- ecdf(attaque)
 
@@ -560,8 +560,8 @@ statistiques.</p>
 <h4>Test de la normalité de distribution</h4>
 <p>Les hypothèses sont les suivantes :</p>
 <ul>
-<li>H0 : La variable ne suit pas la loi normale</li>
-<li>H1 : La variable suit la loi normale</li>
+<li>H0 : La variable suit la loi normale</li>
+<li>H1 : La variable ne suit pas la loi normale</li>
 </ul>
 <pre class="r"><code>shapiro.test(attaque)</code></pre>
 <pre><code>## 
@@ -622,7 +622,7 @@ ensuite un test d’égalité des variances.</li>
 Chine et la Cuba. Les hypothèses sont les suivantes</p>
 <ul>
 <li>H0 Les moyennes sont égales</li>
-<li>H1 Les moyenne sont différentes</li>
+<li>H1 Les moyennes sont différentes</li>
 </ul></li>
 </ul>
 <div id="tests-dégalité-des-moyennes" class="section level5">
@@ -703,8 +703,8 @@ var.test(attaque_cuba, attaque_egypt)</code></pre>
 ## ratio of variances 
 ##           1.435632</code></pre>
 <p>La p-valeur est petite mais légérement plus grande que le risque de
-5% nous pouvosn donc pas rejetter l’hypothèse nulle selon laquelle les
-variances sont égales.</p>
+5% nous ne pouvons donc pas rejetter l’hypothèse nulle selon laquelle
+les variances sont égales.</p>
 <p>Nous supposons dans la suite que les variances de ces deux
 échantillons sont égales.</p>
 <ul>

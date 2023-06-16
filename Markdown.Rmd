@@ -93,7 +93,7 @@ En analysant ce diagramme, il est clair que la plupart des pays de naissance des
 Il est intéressant de noter que la Bulgarie présente la fréquence maximale dans ce diagramme, avec 13 joueuses nées dans ce pays. Cela indique que la Bulgarie est le pays d'origine le plus représenté parmi les joueuses.
 
 
-### Hauteur d'attaque des joueueses
+### Hauteur d'attaque des joueuses
 
 ```{r}
 # Calcul de la fonction de répartition empirique
@@ -220,7 +220,7 @@ Maintenant que nous avons examiné les résultats graphiques, nous pouvons utili
 * Test d'égalité des moyennes de la hauteur d'attaque entre la Chine et la Cuba. Les hypothèses sont les suivantes 
 
   + H0 Les moyennes sont égales
-  + H1 Les moyenne sont différentes
+  + H1 Les moyennes sont différentes
 
 
 ##### Tests d'égalité des moyennes
