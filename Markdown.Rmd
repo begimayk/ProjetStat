@@ -10,23 +10,17 @@ date: "2023-05-05"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction
+# I. Introduction
 
 Les données sont prises de https://www.kaggle.com/ .
-Les données concernent les joueuses de volleyball et contiennent des informations sur leur date de naissance, leur taille, leur poids, leur hauteur de saut (spike), leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
+Les données concernent les joueuses de volleyball et contiennent des informations sur leur date de naissance, leur taille, leur poids, leur hauteur de saut, leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
 
-La date de naissance, la taille et le poids sont des caractéristiques physiques des joueuses qui peuvent avoir une incidence sur leurs performances. La hauteur de saut (spike) et de bloc sont également des facteurs importants dans le volleyball, car ils mesurent la capacité d'une joueuse à attaquer et à défendre. Le poste de jeu de la joueuse est également une information importante, car chaque poste a des responsabilités et des rôles différents sur le terrain. Enfin, le pays d'origine peut également avoir une incidence sur le style de jeu et le niveau de compétition des joueuses.
+La date de naissance, la taille et le poids sont des caractéristiques personnelles et physiques des joueuses qui peuvent avoir une incidence sur leurs performances. La hauteur de saut et de bloc sont également des facteurs importants dans le volleyball, car ils mesurent la capacité d'une joueuse à attaquer et à défendre. Le poste de jeu de la joueuse est également une information importante, car chaque poste a des responsabilités et des rôles différents sur le terrain. Enfin, le pays d'origine peut également avoir une incidence sur le style de jeu et le niveau de compétition des joueuses.
 
 En utilisant ces données, il est possible de mener des analyses statistiques pour étudier la relation entre ces caractéristiques et les performances des joueuses sur le terrain, ainsi que pour étudier les différences entre les joueuses de différents pays et postes de jeu. Ces informations peuvent être utiles pour les entraîneurs et les recruteurs pour sélectionner les joueuses les plus adaptées à leur équipe, ainsi que pour les chercheurs qui s'intéressent aux facteurs qui influencent les performances sportives.
 
-## Variables pour l'analyse
 
-Nous allons effectuer une analyse statistique des données fournies, en commençant par comparer les fréquences des nationalités des joueuses. Ensuite, nous étudierons les capacités et aptitudes des joueuses, à savoir la hauteur maximale d'attaque et la hauteur maximale de blocage, en fonction de leur poste. Ces deux variables sont qualitatives.
-
-Pour approfondir cette étude, nous analyserons également les aptitudes des joueuses en fonction de leurs postes. Cette analyse portera sur des variables quantitatives, ce qui nous permettra d'explorer plus en détail les différences et les tendances entre les postes occupés par les joueuses.
-
-
-## Chargement de données 
+### Chargement du jeu de données 
 
 ```{r}
 
@@ -34,6 +28,19 @@ url <- "women_vb.csv"
 data <- read.csv(url,sep=';', header=TRUE)
 
 ```
+
+### Description et analyse des variables du jeu de données
+
+Nous allons effectuer une analyse statistique des données fournies.
+Tout d'abord nous pouvons répartir nos données en 2 catégories :
+- quantitatives : taille, poids, attaque, block.
+- qualitatives : nom, année de naissance, poste, pays de naissance.
+
+Nous avons décidé de commencer par regarder la fréquence des nationalités des joueuses.
+Ensuite, nous d'étudier les capacités et aptitudes des joueuses, à savoir la hauteur maximale d'attaque et la hauteur maximale de bloc en fonction de leur poste.
+
+Pour approfondir cette étude, nous analyserons également les aptitudes des joueuses en fonction de leurs postes. Cette analyse portera sur des variables quantitatives, ce qui nous permettra d'explorer plus en détail les différences et les tendances entre les postes occupés par les joueuses.
+
 
 
 ## Analyse univariée sur le pays de naissance des joueuses
@@ -145,7 +152,7 @@ print(int_confiance_prop)
 ```{r}
 poste <- data$poste
 block <- data$block
-tableau <- data.frame(colonne1 = colonne1, colonne2=colonne2)
+tableau <- data.frame(colonne1 = poste, colonne2=block)
 print(tableau)
 
 boxplot(block~poste)
@@ -156,6 +163,10 @@ Au vu des résultats ci-dessus, nous pouvons constater qu'il y a une nette diff�
 Nous allons donc continuer notre analyse sur ces 2 sous groupes (centrales, liberos).
 
 ```{r}
+popCentrale <- data[data$poste == "Centrale", ]
+boxplot(popCentrale$block, main = "Boxplot des joueuses centrales", ylab = "Hauteur")
 
+popLibero <- data[data$poste == "Libero", ]
+boxplot(popLibero$block, main = "Boxplot des joueuses liberos", ylab = "Hauteur")
 
 ```
