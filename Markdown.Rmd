@@ -43,26 +43,46 @@ Pour approfondir cette étude, nous analyserons également les aptitudes des jou
 
 
 
-## Analyse univariée sur le pays de naissance des joueuses
+## Analyse univariée sur les pays de naissance des joueuses
 
 
-Nous allons d'abord analyser la fréquence des pays de naissance des joueuses 
+Nous allons d'abord analyser les effectifs des pays de naissance des joueuses 
 ```{r}
 
 pays <- data['pays']
-barplot(table(pays), main = "Pays de naissance", xlab = "Nombre d'occurences", ylab = "Diagramme à batôns")
+
+ggplot(data, aes(x = pays)) +
+  geom_bar(fill = "skyblue") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Pays de naissances", y = "Effectifs")
 
 ```
 
-
+#### Quelles conclusions nous pouvons faire?
 
 Sur ce diagramme en batôns nous obsevons que la fréquence de la plupart des pays de naissance des joueuses est égale à 12. Il n'y a que la Japon et Mexique qui sont les pays de naissance de 11 joueuse et la Bulgarie avec le maximum de ce diagramme : 13.
 
+### Un diagramme en camembert des pays de naissance
+
 ```{r}
-pays_freq <- table(pays)
-pie(pays_freq, labels = names(pays_freq), col = rainbow(length(pays_freq)))
-title("Les pays de naissance des joueuses")
-par(mar = c(1, 1, 1, 1))
+
+# Calculer les effectifs de chaque pays
+pays_eff <- table(pays)
+
+# Calculer les pourcentages the percentages
+pays_percentages <- prop.table(pays_eff) * 100
+
+# Create a color palette for the pie slices
+pale_colors <- c("#F2B5D4", "#B8E3E6", "#FFDB9A", "#B3D9B2", "#FAC8A7", "#D7D7E0",
+                "#F9E6B8", "#B7C9E2", "#F1C2DC", "#C9E8C9", "#FFE4C4", "#D0E0EB")
+
+
+# Créer le diagramme en camembert
+pie(pays_eff, labels = paste(names(pays_eff), "(", sprintf("%.1f%%", pays_percentages), ")"), col = pale_colors)
+
+# Add a legend
+legend("topright", legend = names(pays_eff), fill = pale_colors, cex = 0.8)
+
 ```
 // COMMENTER (pour voir tous les pays)
 
@@ -70,21 +90,42 @@ par(mar = c(1, 1, 1, 1))
 Pour approfondir cette analyse nous allons étudier les aptitudes des joueuses en fonction de leur pays de naissance:
 
 ```{r}
-pays <-data$pays
-attaque <- data$attaque
+attaque<-data$attaque
 
-boxplot(attaque ~ pays, main = "Box Plot des performamce d'attaque des joueuses en fontion de leur pays de naissance", xlab = "Pays de naissance", ylab = "Performance d'attaque")
+ggplot(data, aes(x = pays, y = attaque)) +
+  geom_boxplot() +
+  labs(title = "Box Plot de la hauteur d'attaque des joueuses en fonction de leur pays de naissance",
+       x = "Pays de naissance",
+       y = "La hauteur d'attaque") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 ```
 
-Sur cette boîte à moustache nous constatons que le pays avec la plus grande variance des aptitudes des joueuse est le Mexique. On y retrouve également les pays avec la meilleure performance qui est l'Italie. 
+Sur cette boîte à moustache nous constatons que le pays avec la plus grande variance des aptitudes des joueuse est le Mexique. On y retrouve également les pays avec la meilleure hauteur d'attaque qui est l'Italie. 
+// TODO : commenter le résultat
+```{r}
+# Calculate variances for 'attaques' by country
+variances <- aggregate(attaque ~ pays, data = data, FUN = var)
+means <- aggregate(attaque ~ pays, data = data, FUN = mean)
+# Print the resulting variances
+print(variances)
+print(means)
+```
+// faire analyse des variance et les moyennes 
 
 
 
 ```{r}
-moyenne_par_pays <- aggregate(attaque, by = list(pays), FUN = mean)
-barplot(moyenne_par_pays$x, names.arg = moyenne_par_pays$Group.1, main = "Moyenne de la hauteur de l'attaque des joueuses par pays", xlab = "Pays", ylab = "La moyenne")
+moyenne_attaque <- aggregate(attaque ~ pays, data = data, FUN = mean)
+
+# Sort the countries by mean attack in descending order
+moyenne_attaque <- moyenne_attaque[order(-moyenne_attaque$attaque), ]
+
+# Create a bar plot using ggplot
+ggplot(moyenne_attaque, aes(x = pays, y = attaque)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Mean Attack by Country", x = "Country", y = "Mean Attack")
 ```
-// TODO : commenter le résultat
 
 Nous avons remarqué grâce à l'analyse ci-dessous, qu'il y avait une donnée erronée dans notre jeu de données puisqu'il y avait une joueuse qui avait une hauteur de block à 0. Nous avons donc fait le choix de retirer cette joueuse du jeu de données.
 
