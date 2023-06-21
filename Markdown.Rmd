@@ -325,6 +325,7 @@ ggplot(df, aes(x = Pays, y = Effectif, fill = Poste)) +
 
 ## Analyse univariée sur la hauteur de block 
 ```{r}
+
 block <- data$block
 moyenne <- mean(block)
 print(paste("La hauteur moyenne de block est de", round(moyenne, 2)))
@@ -349,10 +350,12 @@ print(paste("La proportion de block dont la valeur est supérieure à 280 est de
 # Calcul de l'intervalle de confiance à 95% pour la proportion
 int_confiance_prop <- prop.test(sum(block > 280), length(block))$conf.int
 print(int_confiance_prop)
+
 ```
 
 ## Analyse univariée sur la taille des joueuses 
 ```{r}
+
 taille <- data$taille
 moyenne <- mean(taille)
 print(paste("La taille moyenne d'une joueuse est de", round(moyenne, 2)))
@@ -377,6 +380,7 @@ print(paste("La proportion de joueuses mesurant plus de 185 cm est de", round(pr
 # Calcul de l'intervalle de confiance à 95% pour la proportion
 int_confiance_prop <- prop.test(sum(taille > 185), length(taille))$conf.int
 print(int_confiance_prop)
+
 ```
 
 
@@ -386,6 +390,12 @@ print(int_confiance_prop)
 
 ```{r}
 
+poste <- data$poste
+block <- data$block
+tableau <- data.frame(colonne1 = poste, colonne2=block)
+print(tableau)
+
+boxplot(block~poste)
 
 ```
 
@@ -393,6 +403,12 @@ Au vu des résultats ci-dessus, nous pouvons constater qu'il y a une nette diff�
 Nous allons donc continuer notre analyse sur ces 2 sous groupes (centrales, liberos).
 
 ```{r}
+
+popCentrale <- data[data$poste == "Centrale", ]
+boxplot(popCentrale$block, main = "Boxplot des joueuses centrales", ylab = "Hauteur")
+
+popLibero <- data[data$poste == "Libero", ]
+boxplot(popLibero$block, main = "Boxplot des joueuses liberos", ylab = "Hauteur")
 
 
 ```
