@@ -7,10 +7,9 @@ date: "2023-05-05"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
-```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
 # Check if the package is installed; if not, install it
 if (!require(ggplot2)) {
   install.packages("ggplot2")
@@ -18,18 +17,18 @@ if (!require(ggplot2)) {
 }
 
 ```
-## Introduction
 
-### Données
+# I. Introduction
 
-Les données sont prises de https://www.kaggle.com/ .
-Les données concernent les joueuses de volleyball et contiennent des informations sur leur date de naissance, leur taille, leur poids, leur hauteur de saut (spike), leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
+Notre [jeu de données](https://www.kaggle.com/datasets/johnpendenque/women-volleyball-players) est récupéré du site Kaggle. 
+Elles concernent des joueuses de volleyball de la FIVB (Fédération Internationale de VolleyBall) et contiennent des informations sur leur date de naissance, leur taille, leur poids, leur hauteur de saut, leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
 
-La date de naissance, la taille et le poids sont des caractéristiques physiques des joueuses qui peuvent avoir une incidence sur leurs performances. La hauteur de saut (spike) et de bloc sont également des facteurs importants dans le volleyball, car ils mesurent la capacité d'une joueuse à attaquer et à défendre. Le poste de jeu de la joueuse est également une information importante, car chaque poste a des responsabilités et des rôles différents sur le terrain. Enfin, le pays d'origine peut également avoir une incidence sur le style de jeu et le niveau de compétition des joueuses.
+La date de naissance, la taille et le poids sont des caractéristiques personnelles et physiques des joueuses qui peuvent avoir une incidence sur leurs performances. La hauteur de saut et de bloc sont également des facteurs importants dans le volleyball, car ils mesurent la capacité d'une joueuse à attaquer et à défendre. Le poste de jeu de la joueuse est également une information importante, car chaque poste a des responsabilités et des rôles différents sur le terrain. Enfin, le pays d'origine peut également avoir une incidence sur le style de jeu et le niveau de compétition des joueuses.
 
 En utilisant ces données, il est possible de mener des analyses statistiques pour étudier la relation entre ces caractéristiques et les performances des joueuses sur le terrain, ainsi que pour étudier les différences entre les joueuses de différents pays et postes de jeu. Ces informations peuvent être utiles pour les entraîneurs et les recruteurs pour sélectionner les joueuses les plus adaptées à leur équipe, ainsi que pour les chercheurs qui s'intéressent aux facteurs qui influencent les performances sportives.
 
-### Chargement de données 
+
+### Chargement du jeu de données 
 
 ```{r}
 
@@ -39,35 +38,50 @@ data <- read.csv(url,sep=';', header=TRUE)
 attach(data)
 
 ```
-### Modififcations apportées aux données 
+
+### Description et analyse des variables du jeu de données
+
+Nous retrouvons dans ce fichier l'id de la joueuse, son nom et prénom, sa date de naissance, sa taille (en cm), son poids (en kg), sa hauteur maximale à l'attaque (en cm), sa hauteur maximale au bloc (en cm), sa position sur le terrain (autrement dit son poste) ainsi que le code de son pays de naissance.
+Nous avons décidé de garder pour notre étude le nom, l'année de naissance uniquement, la taille, le poids, la hauteur d'attaque, la hauteur de bloc, le poste (nous avons décidé de changer la position sur le terrain par l'appellation du poste directement pour des questions de pratique) et le pays de naissance sur lequel nous avons aussi étudié chaque code de pays afin de changer le code du pays par son nom directement pour des questions de pratique, de compréhension et de meilleure interprétation également.
+
+Nous pouvons répartir nos données en 2 catégories :
+
+| Quantitatives  | Qualitatives |
+| :------------: |:------------:|
+| Taille (en cm)  | Nom |
+| Poids (en kg)  | Année de naissance |
+| Attaque (en cm)  | Poste |
+| Block (en cm)  | Pays de naissance |
+
+Après consultation du contenu de notre jeu de données, nous constatons que notre fichier contient 432 lignes. Or, il y a énormément de doublons. En effet, il y a une répétition du jeu de données qui apparaît en 3 exemplaires. Nous avons donc supprimé les doublons, ce qui nous a amené à 144 lignes. Enfin nous sommes arrivées à 143 après avoir constaté qu'une joueuse avait une hauteur de block à 0 cm et avons donc fait le choix de retirer cette joueuse du jeu de données.
+
+En résumé :
+
+* Taille de l'échantillon = 143
+* Unité statistique : individu (joueuses de volleyball)
+
+Nos variables d'intérêt qualitatives seront le pays de naissance et le poste tandis que nos variables d'intérêt quantitatives seront la hauteur d'attaque et de bloc qui sont respectivement des variables continues puisqu'elles peuvent prendre toutes les valeurs possibles d'un intervalle de nombres réels, mais nous le confirmeront dans la suite de cette étude.
+
+Nous pouvons donc pour le moment nous poser les questions suivantes :
+
+* Est-ce que la taille d'une joueuse influe sur son poste ?
 
 
+# II. Analyse univariée
 
-Voici le fichier de donées de départ : https://www.kaggle.com/datasets/johnpendenque/women-volleyball-players.
-Afin de mieux organiser ces données, nous avons effectué une transformation en remplaçant les codes des pays d'origine des joueuses ainsi que les codes de leurs postes par les noms correspondants. Cela a été réalisé dans le but de rendre les données plus compréhensibles et faciles à interpréter.
+## A. Variable qualitative d'intérêt
 
+#### Pays de naissance des joueuses
 
-### Variables pour l'analyse
-
-
-Nous allons effectuer une analyse statistique des données fournies, en commençant par comparer les fréquences des nationalités des joueuses. Ensuite, nous étudierons les capacités et aptitudes des joueuses, à savoir la hauteur maximale d'attaque et la hauteur maximale de blocage, en fonction de leur poste. Ces deux variables sont qualitatives.
-
-Pour approfondir cette étude, nous analyserons également les aptitudes des joueuses en fonction de leurs postes. Cette analyse portera sur des variables quantitatives, ce qui nous permettra d'explorer plus en détail les différences et les tendances entre les postes occupés par les joueuses.
+Nous allons commencer par effectuer une analyse du pays de naissance des joueuses, qui est une variable _qualitative discrète_.
 
 
-## Analyse univariée
-
-
-### Pays de naissance des joueuses
-
-Nous allons commencer par effectuer une analyse des pays de naissance des joueuses, qui représente une variable _qualitative discrète_. 
-
-
-##### Tri à plat
 Pour résumer l'information contenue dans la variable nous commençons par un _tri à plat_
 ```{r}
+
 # Calculer les effectifs de chaque pays
 pays_eff <- table(pays)
+
 ```
 
 
@@ -307,7 +321,7 @@ ggplot(df, aes(x = Pays, y = Effectif, fill = Poste)) +
 // commenter
 
 
-Nous avons remarqué grâce à l'analyse ci-dessous, qu'il y avait une donnée erronée dans notre jeu de données puisqu'il y avait une joueuse qui avait une hauteur de block à 0. Nous avons donc fait le choix de retirer cette joueuse du jeu de données.
+
 
 ## Analyse univariée sur la hauteur de block 
 ```{r}
