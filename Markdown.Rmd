@@ -23,10 +23,6 @@ if (!require(ggplot2)) {
 Notre [jeu de données](https://www.kaggle.com/datasets/johnpendenque/women-volleyball-players) est récupéré du site Kaggle. 
 Elles concernent des joueuses de volleyball de la FIVB (Fédération Internationale de VolleyBall) et contiennent des informations sur leur date de naissance, leur taille, leur poids, leur hauteur de saut, leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
 
-La date de naissance, la taille et le poids sont des caractéristiques personnelles et physiques des joueuses qui peuvent avoir une incidence sur leurs performances. La hauteur de saut et de bloc sont également des facteurs importants dans le volleyball, car ils mesurent la capacité d'une joueuse à attaquer et à défendre. Le poste de jeu de la joueuse est également une information importante, car chaque poste a des responsabilités et des rôles différents sur le terrain. Enfin, le pays d'origine peut également avoir une incidence sur le style de jeu et le niveau de compétition des joueuses.
-
-En utilisant ces données, il est possible de mener des analyses statistiques pour étudier la relation entre ces caractéristiques et les performances des joueuses sur le terrain, ainsi que pour étudier les différences entre les joueuses de différents pays et postes de jeu. Ces informations peuvent être utiles pour les entraîneurs et les recruteurs pour sélectionner les joueuses les plus adaptées à leur équipe, ainsi que pour les chercheurs qui s'intéressent aux facteurs qui influencent les performances sportives.
-
 
 ### Chargement du jeu de données 
 
@@ -41,8 +37,16 @@ attach(data)
 
 ### Description et analyse des variables du jeu de données
 
-Nous retrouvons dans ce fichier l'id de la joueuse, son nom et prénom, sa date de naissance, sa taille (en cm), son poids (en kg), sa hauteur maximale à l'attaque (en cm), sa hauteur maximale au bloc (en cm), sa position sur le terrain (autrement dit son poste) ainsi que le code de son pays de naissance.
-Nous avons décidé de garder pour notre étude le nom, l'année de naissance uniquement, la taille, le poids, la hauteur d'attaque, la hauteur de bloc, le poste (nous avons décidé de changer la position sur le terrain par l'appellation du poste directement pour des questions de pratique) et le pays de naissance sur lequel nous avons aussi étudié chaque code de pays afin de changer le code du pays par son nom directement pour des questions de pratique, de compréhension et de meilleure interprétation également.
+Les données décrivent chaque joueuse de la manière suivante 
+
+* __nom__ Le nom et le prénom de la joueuse
+* __annee_naissance__ L date de naissance de la joueuse
+* __taille__ La taille en cm de la joueuse
+* __poids__ Le poids de la joueuse en kg
+* __attaque__ La hauteur maximale d'attaque de la joueuse
+* __block__ La hauteur maximale du block de la joueuse
+* __poste__ Le poste occupé par la joueuse : Réceptionneuse/attaquante, centrale, pointue, libero, passeuse,
+* __pays__ Le pays de naissance de la joueuse
 
 Nous pouvons répartir nos données en 2 catégories :
 
@@ -130,6 +134,13 @@ classes_attaque <- cut(attaque,breaks = c(100, 200, 300, 400))
 print(classes_attaque)
 ```
 Dans le cadre de notre analyse, nous supposons que les points de données au sein de chaque classe sont répartis uniformément.
+#### Rapport de corrélation
+
+```{r}
+
+cor(block, attaque)
+
+```
 
 #### Mesures de position
 ```{r}
