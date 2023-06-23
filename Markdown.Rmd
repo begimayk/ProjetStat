@@ -35,18 +35,27 @@ attach(data)
 
 ```
 
+```{r}
+  head(data)
+```
+
+```{r}
+  summary(data)
+```
+
+
 ### Description et analyse des variables du jeu de données
 
 Les données décrivent chaque joueuse de la manière suivante 
 
 * __nom__ Le nom et le prénom de la joueuse
-* __annee_naissance__ L date de naissance de la joueuse
+* __annee_naissance__ La date de naissance de la joueuse
 * __taille__ La taille en cm de la joueuse
 * __poids__ Le poids de la joueuse en kg
 * __attaque__ La hauteur maximale d'attaque de la joueuse
 * __block__ La hauteur maximale du block de la joueuse
 * __poste__ Le poste occupé par la joueuse : Réceptionneuse/attaquante, centrale, pointue, libero, passeuse,
-* __pays__ Le pays de naissance de la joueuse
+* __pays__ Le pays de naissance de la joueuse : Brésil, Bulgarie, Chine, Cuba, Égypte, Italie, Japon, Mexique, Perou, Russie, Serbie, Turquie.
 
 Nous pouvons répartir nos données en 2 catégories :
 
@@ -57,23 +66,18 @@ Nous pouvons répartir nos données en 2 catégories :
 | Attaque (en cm)  | Poste |
 | Block (en cm)  | Pays de naissance |
 
-Après consultation du contenu de notre jeu de données, nous constatons que notre fichier contient 432 lignes. Or, il y a énormément de doublons. En effet, il y a une répétition du jeu de données qui apparaît en 3 exemplaires. Nous avons donc supprimé les doublons, ce qui nous a amené à 144 lignes. Enfin nous sommes arrivées à 143 après avoir constaté qu'une joueuse avait une hauteur de block à 0 cm et avons donc fait le choix de retirer cette joueuse du jeu de données.
+Vu que notre échantillon était de taille humaine nous avons pu nettoyer nos données manuellement.
+Après consultation du contenu de notre jeu de données, nous constatons que notre fichier contient 432 lignes. Or, il y a énormément de doublons. Nous avons donc les doublons, ce qui nous a amené à 144 lignes. Enfin nous sommes arrivées à 143 après avoir constaté qu'une joueuse avait une hauteur de block à 0 cm et avons donc fait le choix de retirer cette joueuse du jeu de données.
 
-En résumé :
 
-* Taille de l'échantillon = 143
-* Unité statistique : individu (joueuses de volleyball)
-
-Nos variables d'intérêt qualitatives seront le pays de naissance et le poste tandis que nos variables d'intérêt quantitatives seront la hauteur d'attaque et de bloc qui sont respectivement des variables continues puisqu'elles peuvent prendre toutes les valeurs possibles d'un intervalle de nombres réels, mais nous le confirmeront dans la suite de cette étude.
 
 Nous pouvons donc pour le moment nous poser les questions suivantes :
 
 * Est-ce que la taille d'une joueuse influe sur son poste ?
+* Est-ca que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays?
 
 
-# II. Analyse univariée
-
-## A. Variable qualitative d'intérêt
+# Analyse qualitative  univariée
 
 #### Pays de naissance des joueuses
 
@@ -110,6 +114,7 @@ En analysant ce diagramme, il est clair que la plupart des pays de naissance des
 
 Il est intéressant de noter que la Bulgarie présente la fréquence maximale dans ce diagramme, avec 13 joueuses nées dans ce pays. Cela indique que la Bulgarie est le pays d'origine le plus représenté parmi les joueuses.
 
+# Analyse quantitative  univariée
 
 ### Hauteur d'attaque des joueuses
 
@@ -134,13 +139,6 @@ classes_attaque <- cut(attaque,breaks = c(100, 200, 300, 400))
 print(classes_attaque)
 ```
 Dans le cadre de notre analyse, nous supposons que les points de données au sein de chaque classe sont répartis uniformément.
-#### Rapport de corrélation
-
-```{r}
-
-cor(block, attaque)
-
-```
 
 #### Mesures de position
 ```{r}
@@ -159,16 +157,28 @@ summary(attaque)
 
 #### Estimation de moyenne
 
+* _Estimateur_ de la moyenne 
+```{r}
+  mean(attaque)
+```
+
+* Intervalle de confiance de la moyenne
 ```{r}
 interval=t.test(attaque)
 interval$conf.int
-mean(attaque)
 ```
 
 Nous pouvons estimer que la moyenne de l'attaque se situe dans l'intervalle [284.5521, 293.0283] avec un niveau de confiance de 95%.
 
 
 #### Estimation de variance 
+
+*Estimateur de la variance 
+```{r}
+var(attaque)
+```
+
+*Intervalle de confiance de la variance
 ```{r}
 # Calcul de l'intervalle de confiance pour la variance
 n <- length(attaque)  # Taille de l'échantillon
@@ -180,7 +190,6 @@ upper_bound <- (n - 1) * var(attaque) / qchisq(alpha/2, df = n - 1)
 # Affichage de l'intervalle de confiance
 confidence_interval <- c(lower_bound, upper_bound)
 confidence_interval
-var(attaque)
 ```
 De même nous estimons que la variance de la hauteur d'attaque des joueuses se situe dans l'intervalle [527.6508 841.5602] avec un niveau de confiance de 95%.
 
@@ -195,9 +204,14 @@ qqnorm(attaque, main = "La loi normale", xlab = "Théorique", ylab = "Observé")
 abline(mean(attaque),sd(attaque),col=2)
 ```
 
-Sur ce graphique, nous pouvons observer que la distribution de la variable d'attaque s'approche à loi normale.
+Histogramme 
 
-Pour valider notre estimations, nous procéderons aux tests statistiques.
+* L'axe x - les valeurs de la hauteur d'atttaque
+* L'axe y - les fréquences  de 
+
+Sur ce graphique, nous pouvons observer que la distribution de la variable d'attaque ne s'approche pas à la distribution normale.
+
+Pour valider notre estimation, nous procéderons aux tests statistiques.
 
 #### Test de la normalité de distribution
 
@@ -208,7 +222,7 @@ Les hypothèses sont les suivantes :
 ```{r}
 shapiro.test(attaque)
 ```
-La p valeur du test est extrêmement faible, soit 1.619e-13, ce qui indique que nous avons suffisamment de preuves pour rejeter l'hypothèse nulle  H0 selon laquelle les données suivent une distribution normale.
+La p valeur du test est extrêmement faible, soit 1.619e-13, ce qui indique que nous avons suffisamment de preuves pour rejetter l'hypothèse nulle  H0 selon laquelle les données suivent une distribution normale. Donc la variable ne suit pas la distribution normale
 
 
 ## Analyse bivariée
@@ -219,6 +233,34 @@ Après avoir étudié les pays de naissance des joueuses et leurs hauteurs d'att
 
 La hauteur d'attaque des joueuses est une variable _quantitative continue_, tandis que leur pays de naissance est une variable _qualitative discrète_.
 
+#### Moyennes de la hauteur d'attaque de chaque sous groupe (pays)
+
+```{r}
+# Calculer la moyenne d'attaque pour chaque pays
+moyenne_attaque <- aggregate(attaque, by = list(pays), FUN = mean)
+colnames(moyenne_attaque) <- c("Pays", "Moyenne_attaque")
+
+# Créer le diagramme à barres avec ggplot2
+p <- ggplot(moyenne_attaque, aes(x = Pays, y = Moyenne_attaque, fill = Pays)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Moyenne d'attaque par pays", col= c("#F2B5D4", "#B8E3E6", "#FFDB9A", "#B3D9B2", "#FAC8A7", "#D7D7E0",
+                "#F9E6B8", "#B7C9E2", "#F1C2DC", "#C9E8C9", "#FFE4C4", "#D0E0EB"), x = "Pays", y = "Moyenne d'attaque") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les noms des pays en diagonale
+
+# Afficher le diagramme
+print(p)
+```
+
+Nous pouvons voir ici que les moyennes les plus elevées sont au Brésil, en Chine, en Italie et en Serbie.
+
+```{r}
+   mean(data$attaque[data$pays=="Bresil"])
+   mean(data$attaque[data$pays=="China"])
+   mean(data$attaque[data$pays=="Italie"])
+   mean(data$attaque[data$pays=="Serbie"])
+```
+La moyenne la plus elevées est en Italie
 
 ```{r}
 attaque<-data$attaque
@@ -233,6 +275,8 @@ ggplot(data, aes(x = pays, y = attaque)) +
 ```
 
 Ce graphique en boîte permet d'observer les quartiles et la médiane de la hauteur d'attaque des joueuses des différents sous-groupes, représentés par leur nationalité. Chaque boîte représente la distribution de la hauteur d'attaque pour un pays spécifique.
+
+Nous voyons que la valeur maximale de la hauteur d'attaque appartient à une joueuse de l'Italie.
 
 Maintenant que nous avons examiné les résultats graphiques, nous pouvons utiliser ces données pour effectuer des tests statistiques. Voici les tests que nous effectuerons en utilisant les résultats de la hauteur d'attaque des différentes nationalités :
 
@@ -275,7 +319,7 @@ shapiro.test(data[data$pays == "Cuba", "attaque"])
 hist(data[data$pays == "Egypte", "attaque"])
 shapiro.test(data[data$pays == "Egypte", "attaque"])
 ```
-Pour les deux tests la p-valeur obtenue est petite, donc nous ne pouvons pas rejjeter l'hypothèse nulle selon laquelle la variable suit la loi normale. Nous supposons donc par la suite que ces deux échantillons ne suivent pas une distribution normale.
+Pour les deux tests la p-valeur obtenue est faible, donc nous pouvons rejjeter l'hypothèse nulle selon laquelle la variable suit la loi normale. Nous supposons donc par la suite que ces deux échantillons ne suivent pas une distribution normale.
 
 Vu que nos échantillons ne suivent pas une distribution normale de ces deux échantillon avec un test Fisher
 
@@ -315,6 +359,17 @@ table_contingence <- table(pays, poste)
 print(table_contingence)
 ```
 
+
+Nous pouvons observer ici qu'il n'y a pas de receptionneuse/attaquante en Turquie. Nous vouyons que le pays avec le plus grand nombre de joueuses occupant 
+
+* le poste de centrale est le Brésil
+* le poste libero sont la Serbie, la Turquie et la Chine
+* le poste de passeuse est loa Turquie
+* le poste de pointue est la Bulgarie
+* le poste de receptionneuse/attaquante est la Cuba et l'Italie
+
+Pour illustrer ces données nous proposons un diagramme en barres avec les différents pays et les effectifs de postes pour chaque pays.
+
 ````{r}
 df <- as.data.frame.table(table_contingence)
 
@@ -328,8 +383,6 @@ ggplot(df, aes(x = Pays, y = Effectif, fill = Poste)) +
   theme_minimal()
 ````
 
-
-// commenter
 
 
 
