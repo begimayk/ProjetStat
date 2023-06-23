@@ -336,42 +336,45 @@ ggplot(df, aes(x = Pays, y = Effectif, fill = Poste)) +
 
 ## Analyse univariée sur la hauteur de block
 
-Afin de faire notre analyse mutlivariée, nous étudions d'abord rapidement la hauteur de block.
+Afin de faire notre analyse mutlivariée, nous allons étudier chacune des variables que nous allons utiliser. Commencons par l'analyse sur la hauteur de block qui est une varibale _quantitative continue_.
 
-### Estimation de moyenne
+### Moyenne
 
 ```{r}
+
+# Calcul de la hauteur moyenne de block
+mean(block)
 
 # Calcul de l'intervalle de confiance à 95% pour la moyenne
 intervalle_de_confiance <- t.test(block)$conf.int
 intervalle_de_confiance
-mean(block)
 
 ```
 
-Nous pouvons estimer que la moyenne de block se situe dans l'intervalle [273.4524, 281.4148] avec un niveau de confiance de 95%.
-La moyenne est de 277.4336 cm.
+La moyenne est de 277.4336 cm et nous avons l'intervalle de confiance suivant avec 95% de confiance [273.4524, 281.4148].
 
-### Estimation de variance
+
+### Variance
 
 ```{r}
 
-# Calcul de l'intervalle de confiance pour la variance
-n <- length(block)  # Taille de l'échantillon
-alpha <- 0.05  # Niveau de confiance (ici 95%)
-
-lower_bound <- (n - 1) * var(block) / qchisq(1 - alpha/2, df = n - 1)
-upper_bound <- (n - 1) * var(block) / qchisq(alpha/2, df = n - 1)
-
-# Affichage de l'intervalle de confiance
-confidence_interval <- c(lower_bound, upper_bound)
-confidence_interval
+# Calcul de la variance de la hauteur de block
 var(block)
+
+# Calcul de l'intervalle de confiance à 95% pour la variance
+n <- length(block)  # Taille de l'échantillon
+alpha <- 0.05  # Niveau de confiance (ici 95% car 0.05 de risque)
+lower_quantile<- (n - 1) * var(block) / qchisq(1 - alpha/2, df = n - 1)
+upper_quantile <- (n - 1) * var(block) / qchisq(alpha/2, df = n - 1)
+confidence_interval <- c(lower_quantile, upper_quantile)
+confidence_interval
 
 ```
 
-De même nous estimons que la variance de la hauteur d'attaque des joueuses se situe dans l'intervalle [465.6286, 742.6398] avec un niveau de confiance de 95%.
-La variance est de 580.0079.
+La moyenne est de 277.4336 cm et nous avons l'intervalle de confiance suivant avec 95% de confiance [465.6286, 742.6398].
+
+
+### Proportion
 
 ```{r}
 
@@ -383,32 +386,35 @@ int_confiance_prop <- prop.test(sum(block > 280), length(block))$conf.int
 int_confiance_prop
 
 ```
-La proportion de block dont la valeur est supérieure à 280 cm se situe dans l'intervalle [0.4810458, 0.6481979] avec un niveau de confiance de 95%.
-La proportion de block dont la valeur est supérieure à 280 cm est de 56.64 %
+
+La proportion de block dont la valeur est supérieure à 280 cm est de 56.64 % et nous avons l'intervalle de confiance suivant avec 95% de confiance [0.4810458, 0.6481979].
+
+
+### Analyse gaussienne
+
+Nous allons regarder si notre variable peut être approchée par un modèle Gaussien.
 
 ```{r}
 
-# Analyse gaussienne
 par(mfrow=c(1,2))
 hist(block , main="Répartition de la hauteur de block ",xlab="Hauteur de block (en cm)",prob=T)
 curve(dnorm(x, mean(block), sd(block)), col=2, add=TRUE, lty=2)
 
 qqnorm(block)
-qqline(block, col=2)
+abline(mean(block), sd(block), col=2)
 
 ```
 
-Sur ce graphique, nous pouvons observer que la distribution de la variable de block s'approche de la loi normale (par une courbe gaussienne).
+Nous pouvons constater que la hauteur de block se rapproche de la loi normale par une courbe gaussienne.
+Pour valider ce constat, nous allons procéder à des tests statistiques.
 
-Pour valider notre estimation, nous allons procéder à des tests statistiques.
 
-
-### Test de la normalité de distribution
+### Test statistique sur la normalité de distribution
 
 Les hypothèses sont les suivantes :
 
-* H0 : La variable suit la loi normale 
-* H1 : La variable ne suit pas la loi normale
+* H0 : La variable de block suit la loi normale 
+* H1 : La variable de block ne suit pas la loi normale
 
 ```{r}
 
@@ -416,58 +422,44 @@ shapiro.test(block)
 
 ```
 
-La p valeur du test est extrêmement faible : 9.095e-13, ce qui indique que nous avons suffisamment de preuves pour rejeter l'hypothèse nulle  H0 selon laquelle les données suivent une distribution normale.
+La p-valeur de 9.095e-13 est particulièrement faible. Cela nous permet de rejeter l'hypothèse H0 selon laquelle la variable de block suit la loi normale et d'être sûr de cette décision.
+
 
 ## Analyse univariée sur le poste des joueuses
 
-Nous allons commencer par effectuer une analyse du poste des joueuses, qui est une variable _qualitative discrète_.
+Afin de faire notre analyse mutlivariée, nous allons étudier la deuxième des variables que nous allons utiliser : le poste des joueuses qui est une variable _qualitative discrète_.
 
-Pour résumer l'information contenue dans la variable nous commençons par un _tri à plat_.
+### Représentation de la variable de poste
+
+Pour résumer l'information contenue dans la variable de poste, nous commençons réaliser un _tri à plat_.
 
 ```{r}
 
 # Calculer les effectifs de chaque pays
-effectif_poste <- table(poste)
-effectif_poste
+frequence_poste <- table(poste)
+frequence_poste
 
 ```
 
-Nous pouvons estimer que la taille moyenne se situe dans l'intervalle [179.6347, 182.3653] avec un niveau de confiance de 95%.
-La taille moyenne d'une joueuse est de 181 cm.
-
-### Répartition des données
+48% de notre échantillon est représenté par les pointues. Une répartition est quasi équitable entre les passeuses et les réceptionneuses/attaquantes, tandis que l'on retrouve un peu plus du double de centrale que de libero qui est le poste le moins représenté dans notre échantillon.
+Afin de mieux visualiser ce résultat, voici un diagramme en barre représentant les données ci-dessus :
 
 ```{r}
 
-# Créer les couleurs
-pale_colors <- c("#F2B5D4", "#B8E3E6", "#FFDB9A", "#B3D9B2", "#FAC8A7", "#D7D7E0",
-                "#F9E6B8", "#B7C9E2", "#F1C2DC", "#C9E8C9", "#FFE4C4", "#D0E0EB")
-
-# Créer le diagramme en camembert
-pie(effectif_poste, paste(names(effectif_poste), "(", formatC(effectif_poste, format = "f", digits = 0), ")", sep = ""), col = pale_colors)
-
-# Ajouter la legende
-legend("topright", legend = names(effectif_poste), fill = pale_colors, cex = 0.8)
+barplot(table(poste), main = "Diagramme en barres sur la fréquence des postes", xlab = "Poste", ylab = "Fréquence")
 
 ```
 
-En analysant ce diagramme, nous pouvons constater que les postes des joueuses ont une fréquence bien différente. 
 
-Il est intéressant de noter que les pointues présentent la fréquence maximale dans ce diagramme, avec 48% de joueuses. Cela indique que pointue est le poste le plus représenté parmi les joueuses.
+## Analyse multivariée sur la hauteur de block par rapport au poste des joueuses
 
-
-## Analyse multivariée 
-# Quanti x quali
-
-Après avoir étudié séparément le poste des joueuses et leur hauteur de bloc, nous pouvons désormais analyser la hauteur de bloc selon le poste des joueuses.
-
-La hauteur de bloc des joueuses est une variable _quantitative continue_, tandis que leur poste est une variable _qualitative discrète_.
+Jusqu'à présent, nous avons regardé chaque variable de façon indépendante. Maintenant, nous allons prendre en compte, mesurer et analyser les liens qui peuvent exister entre ces deux variables.
 
 ```{r}
-
-tableau <- data.frame(colonne1 = poste, colonne2=block)
 
 boxplot(block~poste)
+
+var(poste=="Centrale")
 
 ```
 
