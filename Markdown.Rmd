@@ -501,8 +501,8 @@ Pour effectuer des tests d'égalité des variances, il est recommandé de vérif
 
 Les hypothèses sont les suivantes :
 
-* H0 : La variable suit la loi normale
-* H1 : La variable ne suit pas la loi normale 
+* H0 : Les variances sont égales
+* H1 : Les variances sont différentes
 
 ```{r}
 
@@ -545,37 +545,6 @@ Test d'égalité des moyennes de la hauteur de block entre les passeuses et les 
 t.test(block_libero, block_passeuse, var.equal = T)
 
 ```
- //VOIR AVEC BEGI
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ```{r}
 
@@ -587,13 +556,34 @@ boxplot(popLibero$block, main = "Boxplot des joueuses liberos", ylab = "Hauteur"
 
 ```
 
-## Régression linéaire
+## Nuage de points
+
+Définissons nos variables. Nous allons utiliser la hauteur d'attaque comme variable aléatoire observable et la taille comme variable déterministe (non aléatoire) observable.
 
 ```{r}
 
-reg_multi <- lm(attaque~block)
-summary(reg_multi)
+ggplot(data,aes(x=taille,y=attaque))+ geom_point()+
+xlab("Taille")+
+ylab("Hauteur d'attaque")
 
 ```
 
+On remarque ici que le nuage de points n'est pas très éloigné d'une ligne, mais contient quand même quelques données écartées. Nous allons donc faire une régression linéaire simple.
 
+
+## Simple régression
+
+```{r}
+
+simple_reg <- lm(attaque~taille,data=data)
+summary(simple_reg)
+ggplot(data,aes(x=taille,y=attaque))+ geom_point()+
+stat_smooth(method="lm",se=FALSE)+ xlab("Taille")+
+ylab("Attaque")
+anova(simple_reg)
+
+```
+
+La valeur de R² étant 0.4039 est un peu éloignée de 1, mais n'est pas extrêmement faible non plus. Nous pouvons dire que ce résultat provient du fait que nous avons un échantillon  de taille limitée ne nous permettant pas d'avoir une analyse assez solide.
+
+La valeur de SSE est de 55637 tandis que celle de SSM est de 37695, nous constatons qu'il y a bien une différence mais pas clairement significative, mais cela nous permet de conclure sur le fait qu'on ne peut pas établir une corrélation avec nos données.
