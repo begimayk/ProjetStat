@@ -15,7 +15,6 @@ if (!require(ggplot2)) {
   install.packages("ggplot2")
   library(ggplot2)
 }
-
 ```
 
 # I. Introduction
@@ -75,6 +74,7 @@ Nous pouvons donc pour le moment nous poser les questions suivantes :
 
 * Est-ce que la taille d'une joueuse influe sur son poste ?
 * Est-ca que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays?
+* Est-ce que le poste d'une joueuse dépend de son pays de naissance?
 
 
 # Analyse qualitative  univariée
@@ -97,15 +97,21 @@ pays_eff <- table(pays)
 
 ```{r}
 
-# Créer les couleurs
+analyse_pays <- data.frame(names(pays_eff), pays_eff)
+
+
 pale_colors <- c("#F2B5D4", "#B8E3E6", "#FFDB9A", "#B3D9B2", "#FAC8A7", "#D7D7E0",
                 "#F9E6B8", "#B7C9E2", "#F1C2DC", "#C9E8C9", "#FFE4C4", "#D0E0EB")
 
-# Créer le diagramme en camembert
-pie(pays_eff, paste(names(pays_eff), "(", formatC(pays_eff, format = "f", digits = 0), ")", sep = ""), col = pale_colors)
-
-# Ajouter la legende
-legend("topright", legend = names(pays_eff), fill = pale_colors, cex = 0.8)
+# Create the bar plot
+ggplot(analyse_pays, aes(x = names(pays_eff), 
+  y = pays_eff, fill = names(pays_eff))) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = pale_colors) +
+  labs(title = "Nationalités des joueuses", 
+  x = "Pays", y = "Effectifs") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_cartesian(clip = "off")
 
 ```
 
@@ -244,7 +250,8 @@ colnames(moyenne_attaque) <- c("Pays", "Moyenne_attaque")
 p <- ggplot(moyenne_attaque, aes(x = Pays, y = Moyenne_attaque, fill = Pays)) +
   geom_bar(stat = "identity") +
   labs(title = "Moyenne d'attaque par pays", col= c("#F2B5D4", "#B8E3E6", "#FFDB9A", "#B3D9B2", "#FAC8A7", "#D7D7E0",
-                "#F9E6B8", "#B7C9E2", "#F1C2DC", "#C9E8C9", "#FFE4C4", "#D0E0EB"), x = "Pays", y = "Moyenne d'attaque") +
+ "#F9E6B8", "#B7C9E2", "#F1C2DC", "#C9E8C9", "#FFE4C4", "#D0E0EB"),
+ x = "Pays", y = "Moyenne d'attaque") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Incliner les noms des pays en diagonale
 
@@ -380,14 +387,15 @@ colnames(df) <- c("Pays", "Poste", "Effectif")
 ggplot(df, aes(x = Pays, y = Effectif, fill = Poste)) +
   geom_bar(stat = "identity", position = "stack") +
   labs(x = "Pays", y = "Effectif", fill = "Poste") +
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+# Incliner les noms des pays en diagonale
 ````
 
 
+# Analyse univariée quantitative
 
-
-
-## Analyse univariée sur la hauteur de block
+## La hauteur de block
 
 Afin de faire notre analyse mutlivariée, nous étudions d'abord rapidement la hauteur de block.
 
@@ -403,7 +411,7 @@ mean(block)
 ```
 
 Nous pouvons estimer que la moyenne de block se situe dans l'intervalle [273.4524, 281.4148] avec un niveau de confiance de 95%.
-La moyenne est de 277.4336 cm.
+L'estimateur de la moyenne est de 277.4336 cm.
 
 ### Estimation de variance
 
@@ -424,7 +432,7 @@ var(block)
 ```
 
 De même nous estimons que la variance de la hauteur d'attaque des joueuses se situe dans l'intervalle [465.6286, 742.6398] avec un niveau de confiance de 95%.
-La variance est de 580.0079.
+L'estimateur de la variance est de 580.0079.
 
 ```{r}
 
@@ -451,7 +459,7 @@ qqline(block, col=2)
 
 ```
 
-Sur ce graphique, nous pouvons observer que la distribution de la variable de block s'approche de la loi normale (par une courbe gaussienne).
+L'histogramme de la repartition des valeurs de la hauteur de block n'est pas symétrique. On pourrais supposer que la variable ne suit pas la distribution normale.
 
 Pour valider notre estimation, nous allons procéder à des tests statistiques.
 
@@ -475,7 +483,7 @@ La p valeur du test est extrêmement faible : 9.095e-13, ce qui indique que nous
 
 Nous allons commencer par effectuer une analyse du poste des joueuses, qui est une variable _qualitative discrète_.
 
-Pour résumer l'information contenue dans la variable nous commençons par un _tri à plat_.
+Nous commençons par un  _tri à plat_.
 
 ```{r}
 
@@ -485,8 +493,6 @@ effectif_poste
 
 ```
 
-Nous pouvons estimer que la taille moyenne se situe dans l'intervalle [179.6347, 182.3653] avec un niveau de confiance de 95%.
-La taille moyenne d'une joueuse est de 181 cm.
 
 ### Répartition des données
 
@@ -509,10 +515,9 @@ En analysant ce diagramme, nous pouvons constater que les postes des joueuses on
 Il est intéressant de noter que les pointues présentent la fréquence maximale dans ce diagramme, avec 48% de joueuses. Cela indique que pointue est le poste le plus représenté parmi les joueuses.
 
 
-## Analyse multivariée 
-# Quanti x quali
+# Analyse multivariée 
 
-Après avoir étudié séparément le poste des joueuses et leur hauteur de bloc, nous pouvons désormais analyser la hauteur de bloc selon le poste des joueuses.
+## La hauteur du block selon le poste de la joueuse
 
 La hauteur de bloc des joueuses est une variable _quantitative continue_, tandis que leur poste est une variable _qualitative discrète_.
 
@@ -552,6 +557,8 @@ La p-valeur est supérieure à 5% (7.8%). Nous pouvons donc accepter l'hypothès
 
 Pour effectuer des tests d'égalité des variances, il est recommandé de vérifier d'abord l'adéquation à la distribution normale des échantillons concernés. Dans notre cas, nous avons deux sous-groupes : les passeuses et les liberos. Nous allons donc procéder à des tests de normalité pour ces deux groupes.
 
+##### Test de normalité des distribution des sous groupes
+
 Les hypothèses sont les suivantes :
 
 * H0 : La variable suit la loi normale
@@ -570,7 +577,7 @@ Pour les deux tests la p-valeur obtenue est petite, donc nous ne pouvons pas rej
 
 Vu que nos échantillons ne suivent pas une distribution normale, procédons à ce que l'on appelle un test de Fisher.
 
-Test d'égalité des variance entre les passeuses et les liberos : 
+##### Test d'égalité des variances entre les passeuses et les liberos : 
 
 * H0 : Les variances sont égales
 * H1 : Les variances sont différentes
@@ -598,36 +605,8 @@ Test d'égalité des moyennes de la hauteur de block entre les passeuses et les 
 t.test(block_libero, block_passeuse, var.equal = T)
 
 ```
- //VOIR AVEC BEGI
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+La p-valeur est supérieur au risque alpha de 5%. Nous n'avons pas suffisamment de preuves pour rejetter l'hypothèse nulle H0. Les variances de ces 2 sous groupes sont donc égales.
 
 
 ```{r}
@@ -642,11 +621,15 @@ boxplot(popLibero$block, main = "Boxplot des joueuses liberos", ylab = "Hauteur"
 
 ## Régression linéaire
 
+On suppose qu'il existe une relation entre la hauteur d'attaque d'une joueuse et sa taille. Vu que ces deux données sont des variables quantitatives continues nous allons voir s'il existe une relation linéaire qui relie ces 2 variables.
+
 ```{r}
-
-reg_multi <- lm(attaque~block)
+reg_multi <- lm(attaque~taille)
+```
+```{r}
 summary(reg_multi)
-
 ```
 
-
+```{r}
+anova(reg_multi)
+```
