@@ -71,16 +71,15 @@ Nous pouvons donc pour le moment nous poser les questions suivantes :
 * Est-ce que la taille d'une joueuse influe sur son poste ?
 
 
-# II. Analyse univariée
+# II. Analyse du pays de naissance et de la hauteur d'attaque
 
-## A. Variable qualitative d'intérêt
-
-#### Pays de naissance des joueuses
+## A. Variable qualitative d'intérêt - le pays de naissance des joueuses
 
 Nous allons commencer par effectuer une analyse du pays de naissance des joueuses, qui est une variable _qualitative discrète_.
 
 
-Pour résumer l'information contenue dans la variable nous commençons par un _tri à plat_
+Pour résumer l'information contenue dans la variable nous commençons par un _tri à plat_.
+
 ```{r}
 
 # Calculer les effectifs de chaque pays
@@ -105,13 +104,12 @@ legend("topright", legend = names(pays_eff), fill = pale_colors, cex = 0.8)
 
 ```
 
-
 En analysant ce diagramme, il est clair que la plupart des pays de naissance des joueuses ont une fréquence de 12, ce qui signifie qu'il y a un nombre égal de joueuses nées dans ces pays. Cependant, il y a deux exceptions à cette tendance : le Japon et le Mexique, qui sont les pays de naissance de 11 joueuses chacun.
 
 Il est intéressant de noter que la Bulgarie présente la fréquence maximale dans ce diagramme, avec 13 joueuses nées dans ce pays. Cela indique que la Bulgarie est le pays d'origine le plus représenté parmi les joueuses.
 
 
-### Hauteur d'attaque des joueuses
+## B. Variable quantitative d'intérêt - la hauteur d'attaque des joueuses
 
 ```{r}
 # Calcul de la fonction de répartition empirique
@@ -122,10 +120,10 @@ plot(ecdf_attaque, main = "Fonction de répartition empirique - Attaque", xlab =
 
 ```
 
-
 Les nombreux sauts de petite taille observés dans la variable suggèrent fortement que cette variable _quantitative_ est _continue_.
 
 Étant donné que la variable en question est continue, il est approprié de réaliser un regroupement en classes des données.
+
 ```{r}
 # Regroupement en classes
 classes_attaque <- cut(attaque,breaks = c(100, 200, 300, 400))
@@ -133,8 +131,11 @@ classes_attaque <- cut(attaque,breaks = c(100, 200, 300, 400))
 # Affichage des classes
 print(classes_attaque)
 ```
+
 Dans le cadre de notre analyse, nous supposons que les points de données au sein de chaque classe sont répartis uniformément.
-#### Rapport de corrélation
+
+
+### Rapport de corrélation
 
 ```{r}
 
@@ -142,18 +143,20 @@ cor(block, attaque)
 
 ```
 
-#### Mesures de position
+### Mesures de position
+
 ```{r}
 boxplot(attaque, main="La hauteur d'attaque des joueuses de volley")
 ```
 
-
 En observant ce diagramme, on peut clairement distinguer la valeur minimale, les quartiles, la médiane et la valeur maximale.
 
 Voici ces valeurs 
+
 ```{r}
 summary(attaque)
 ```
+
 
 ### Probabilité et estimations 
 
@@ -169,6 +172,7 @@ Nous pouvons estimer que la moyenne de l'attaque se situe dans l'intervalle [284
 
 
 #### Estimation de variance 
+
 ```{r}
 # Calcul de l'intervalle de confiance pour la variance
 n <- length(attaque)  # Taille de l'échantillon
@@ -182,7 +186,9 @@ confidence_interval <- c(lower_bound, upper_bound)
 confidence_interval
 var(attaque)
 ```
+
 De même nous estimons que la variance de la hauteur d'attaque des joueuses se situe dans l'intervalle [527.6508 841.5602] avec un niveau de confiance de 95%.
+
 
 #### Comparaison à la loi normale
 
@@ -195,30 +201,30 @@ qqnorm(attaque, main = "La loi normale", xlab = "Théorique", ylab = "Observé")
 abline(mean(attaque),sd(attaque),col=2)
 ```
 
-Sur ce graphique, nous pouvons observer que la distribution de la variable d'attaque s'approche à loi normale.
+Sur ce graphique, nous pouvons observer que la distribution de la variable d'attaque s'approche de la loi normale.
 
-Pour valider notre estimations, nous procéderons aux tests statistiques.
+Pour valider notre estimation, nous procéderons aux tests statistiques.
+
 
 #### Test de la normalité de distribution
 
 Les hypothèses sont les suivantes :
 
-* H0 : La variable suit la loi normale 
+* H0 : La variable suit la loi normale
 * H1 : La variable ne suit pas la loi normale
+
 ```{r}
 shapiro.test(attaque)
 ```
+
 La p valeur du test est extrêmement faible, soit 1.619e-13, ce qui indique que nous avons suffisamment de preuves pour rejeter l'hypothèse nulle  H0 selon laquelle les données suivent une distribution normale.
 
 
-## Analyse bivariée
-
-### Hauteur d'attaque des joueuses de volleyball selon leur pays de naissance
+## C. Analyse bivariée - Pays de naissance x Hauteur d'attaque
 
 Après avoir étudié les pays de naissance des joueuses et leurs hauteurs d'attaque, nous pouvons désormais analyser la hauteur d'attaque selon le pays de naissance des joueuses.
 
 La hauteur d'attaque des joueuses est une variable _quantitative continue_, tandis que leur pays de naissance est une variable _qualitative discrète_.
-
 
 ```{r}
 attaque<-data$attaque
@@ -240,7 +246,7 @@ Maintenant que nous avons examiné les résultats graphiques, nous pouvons utili
 * Test de comparaison de variances : De même nous observons une similarité entre les variances enre la Cuba et l'Egypte, nous allons donc effectuer un test d'égalité des moyennes pour ces deux pays et ensuite un test d'égalité des variances.
 
 
-#### Tests statistiques 
+### Tests statistiques 
 
 * Test d'égalité des moyennes de la hauteur d'attaque entre la Chine et la Cuba. Les hypothèses sont les suivantes 
 
@@ -248,7 +254,7 @@ Maintenant que nous avons examiné les résultats graphiques, nous pouvons utili
   + H1 Les moyennes sont différentes
 
 
-##### Tests d'égalité des moyennes
+### Tests d'égalité des moyennes
 
 ```{r}
 attaque_cuba <- attaque[pays == "Cuba"]
@@ -259,12 +265,11 @@ t.test(attaque_cuba, attaque_china)
 La p-valeur est grande (26,32%) par rapport au risque de 5% de se tromper. Nous pouvons donc accepter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales et rejetter l'hypothèse H1 selon laquelle les deux moyennes sont différentes. Nous constatons également que la différence entre ces deux moyennes se trouve dans l'intervalle [-32.8, 9.8] avec un niveau de confiance de 95%.
 
 
-##### Tests d'égalité des variances
-
+### Tests d'égalité des variances
 
 Pour effectuer des tests d'égalité des variances, il est recommandé de vérifier d'abord l'adéquation à la distribution normale des échantillons concernés. Dans notre cas, nous avons deux sous-groupes : Cuba et Égypte. Nous allons donc procéder à des tests de normalité pour ces deux groupes.
 
-Les hypothèses sont les suivantes 
+Les hypothèses sont les suivantes :
 
 * H0 : La variable suit la loi normale
 * H1 : La variable ne suit pas la loi normale 
@@ -275,38 +280,42 @@ shapiro.test(data[data$pays == "Cuba", "attaque"])
 hist(data[data$pays == "Egypte", "attaque"])
 shapiro.test(data[data$pays == "Egypte", "attaque"])
 ```
+
 Pour les deux tests la p-valeur obtenue est petite, donc nous ne pouvons pas rejjeter l'hypothèse nulle selon laquelle la variable suit la loi normale. Nous supposons donc par la suite que ces deux échantillons ne suivent pas une distribution normale.
 
 Vu que nos échantillons ne suivent pas une distribution normale de ces deux échantillon avec un test Fisher
 
-* Test d'égalité des variance entre la Cuba et l'Egypte 
+Test d'égalité des variance entre la Cuba et l'Egypte :
 
-  + H0 Les variances sont égales
-  + H1 Les variances sont différentes
+* H0 Les variances sont égales
+* H1 Les variances sont différentes
   
 ````{r}
 attaque_egypt <- attaque[pays == "Egypte"]
 var.test(attaque_cuba, attaque_egypt)
 ````
+
 La p-valeur est petite mais légérement plus grande que le risque de 5% nous ne pouvons donc pas rejetter l'hypothèse nulle selon laquelle les variances sont égales.
 
 Nous supposons dans la suite que les variances de ces deux échantillons sont égales.
 
 
-* Test d'égalité des moyennes de la hauteur d'attaque entre la Cuba et l'Égypte. Les hypothèses sont les suivantes 
+Test d'égalité des moyennes de la hauteur d'attaque entre la Cuba et l'Égypte. Les hypothèses sont les suivantes :
 
-  + H0 Les moyennes sont égales
-  + H1 Les moyenne sont différentes
+* H0 Les moyennes sont égales
+* H1 Les moyenne sont différentes
 
 ```{r}
 t.test(attaque_cuba, attaque_egypt, var.equal = T)
 ```
+
 La p-valeur est plus petite que dans le premier test mais elle reste supérieure au risque de 5%. Nous n'avons donc pas suffisament de preuve pour rejetter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales par consequent nous l'acceptons. Nous observons que la différence entre ces deux moyennes se trouve dans l'intervalle [-1.38, 50.05] avec un niveau de confiance de 95%.
 
 
-### Les postes des joueuses selon leur pays de naisssance
+## III. Le postes des joueuses selon leur pays de naisssance
 
-####  Tableau de contingence
+###  Tableau de contingence
+
 ```{r}
 # Création du tableau de contingence
 table_contingence <- table(pays, poste)
@@ -328,15 +337,15 @@ ggplot(df, aes(x = Pays, y = Effectif, fill = Poste)) +
   theme_minimal()
 ````
 
-
 // commenter
 
 
+# IV. Analyse de la hauteur de block et du poste des joueuses
 
-
-## Analyse univariée sur la hauteur de block
+## A. Variable quantitative d'intérêt - la hauteur de block
 
 Afin de faire notre analyse mutlivariée, nous allons étudier chacune des variables que nous allons utiliser. Commencons par l'analyse sur la hauteur de block qui est une varibale _quantitative continue_.
+
 
 ### Moyenne
 
@@ -425,13 +434,14 @@ shapiro.test(block)
 La p-valeur de 9.095e-13 est particulièrement faible. Cela nous permet de rejeter l'hypothèse H0 selon laquelle la variable de block suit la loi normale et d'être sûr de cette décision.
 
 
-## Analyse univariée sur le poste des joueuses
+## B. Variable qualitative d'intérêt - le poste des joueuses
 
-Afin de faire notre analyse mutlivariée, nous allons étudier la deuxième des variables que nous allons utiliser : le poste des joueuses qui est une variable _qualitative discrète_.
+Afin de faire notre analyse mutlivariée, nous allons étudier la deuxième des variables que nous allons utiliser : le poste des joueuses, qui est une variable _qualitative discrète_.
+
 
 ### Représentation de la variable de poste
 
-Pour résumer l'information contenue dans la variable de poste, nous commençons réaliser un _tri à plat_.
+Pour résumer l'information contenue dans la variable de poste, nous commençons par réaliser un _tri à plat_.
 
 ```{r}
 
