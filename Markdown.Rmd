@@ -39,6 +39,7 @@ attach(data)
 ```
 
 
+
 Les données décrivent chaque joueuse de la manière suivante :
 
 * __nom__ Son nom et prénom
@@ -49,6 +50,11 @@ Les données décrivent chaque joueuse de la manière suivante :
 * __block__ Sa hauteur maximale au block
 * __poste__ Son poste : Réceptionneuse/attaquante, centrale, pointue, libéro ou passeuse
 * __pays__ Son pays de naissance
+
+
+```{r}
+head(data)
+```
 
 Nous pouvons répartir nos données en 2 catégories :
 
@@ -675,7 +681,7 @@ ylab("Attaque")
 
 ```
 
-Comme constaté précédement, la droite tracé regroupe effectivement une partie des valeurs entre 250 et 350 (sur l'abscisse). Les valeurs plus éloignées de cette droite se trouvent vers le bas de l'abscisse.
+Comme constaté précédement, la droite tracée regroupe effectivement une partie des valeurs entre 250 et 350 (sur l'abscisse). Les valeurs plus éloignées de cette droite se trouvent vers le bas de l'abscisse.
 
 
 # Conclusion
@@ -684,8 +690,8 @@ Pour conclure les analyses statistiques effectuées sur cet échantillon, nous r
 
 __Est-ce que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays ?__
 
-Nous avons vu que la hauteur d'attaque moyenne change selon le pays de naissance d'une joueuse. Nous avons trouvé à l'aide des tests que les moyennes de la hauteur d'attaque sont égales entre Cuba, la Chine et l'Égypte. Les variances sont égales entre Cuba et l'Égypte.
-Cela signifie que les performances sont différentes selon les pays mise à part l'exception des pays cités ci-dessus.
+Nous avons vu que la hauteur d'attaque moyenne change selon le pays de naissance d'une joueuse. Cependant nous avons trouvé à l'aide des tests que les moyennes de la hauteur d'attaque sont égales entre Cuba, la Chine et l'Égypte. Les variances sont égales entre Cuba et l'Égypte.
+
 
 __Est-ce que des postes sont plus ou moins représentés dans un pays que dans un autre ?__
 
