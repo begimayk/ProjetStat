@@ -3,8 +3,11 @@ title: "FIVB (Fédération Internationale de VolleyBall)"
 output:
   pdf_document: 
     toc: true
-  html_document: default
+  html_document:
+    toc: true
 date: "2023-05-05"
+author:
+  Begimay KONUSHBAEVA & Camille CABROL
 ---
 
 ```{r setup, include=FALSE}
@@ -21,7 +24,7 @@ if (!require(ggplot2)) {
 # Introduction
 
 Notre [jeu de données](https://www.kaggle.com/datasets/johnpendenque/women-volleyball-players) est récupéré du site Kaggle. 
-Elles concernent des joueuses de volleyball de la FIVB (Fédération Internationale de VolleyBall) et contiennent des informations sur leur date de naissance, leur taille, leur poids, leur hauteur de saut, leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
+Il concerne des joueuses de volleyball de la FIVB (Fédération Internationale de VolleyBall) et contient des informations sur leur date de naissance, leur taille, leur poids, leur hauteur d'attaque, leur hauteur de bloc, leur poste de jeu et leur pays d'origine.
 
 
 ## Chargement du jeu de données 
@@ -36,16 +39,16 @@ attach(data)
 ```
 
 
-Les données décrivent chaque joueuse de la manière suivante 
+Les données décrivent chaque joueuse de la manière suivante :
 
-* __nom__ Le nom et le prénom de la joueuse
-* __annee_naissance__ L date de naissance de la joueuse
-* __taille__ La taille en cm de la joueuse
-* __poids__ Le poids de la joueuse en kg
-* __attaque__ La hauteur maximale d'attaque de la joueuse
-* __block__ La hauteur maximale du block de la joueuse
-* __poste__ Le poste occupé par la joueuse : Réceptionneuse/attaquante, centrale, pointue, libero, passeuse,
-* __pays__ Le pays de naissance de la joueuse
+* __nom__ Son nom et prénom
+* __annee_naissance__ Sa date de naissance
+* __taille__ Sa taille en cm
+* __poids__ Son poids en kg
+* __attaque__ Sa hauteur maximale à l'attaque
+* __block__ Sa hauteur maximale au block
+* __poste__ Son poste : Réceptionneuse/attaquante, centrale, pointue, libéro ou passeuse
+* __pays__ Son pays de naissance
 
 Nous pouvons répartir nos données en 2 catégories :
 
@@ -65,9 +68,9 @@ En résumé :
 
 L'analyse effectuée portera sur les questions suivantes :
 
-* Est-ca que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays?
-* Est-ce que le poste d'une joueuse dépend de son pays de naissance?
-* Est-ce que la hauteur de l'attaque dépend de la taille d'une joueuse?
+* Est-ce que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays ?
+* Est-ce que des postes sont plus ou moins représentés dans un pays que dans un autre ?
+* Est-ce que la hauteur de l'attaque dépend de la taille d'une joueuse ?
 
 
 # La hauteur d'attaque selon le pays de naissance
@@ -77,12 +80,13 @@ L'analyse effectuée portera sur les questions suivantes :
 Nous allons commencer par effectuer une analyse du pays de naissance des joueuses, qui est une variable _qualitative discrète_.
 
 
-Pour résumer l'information contenue dans la variable nous commençons par un _tri à plat_.
+Pour résumer l'information contenue dans la variable nous réalisons un _tri à plat_.
 
 ```{r}
 
 # Calculer les effectifs de chaque pays
 pays_eff <- table(pays)
+pays_eff
 
 ```
 
@@ -109,14 +113,46 @@ ggplot(analyse_pays, aes(x = names(pays_eff),
 
 ```
 
-En analysant ce diagramme, il est clair que la plupart des pays de naissance des joueuses ont une fréquence de 12, ce qui signifie qu'il y a un nombre égal de joueuses nées dans ces pays. Cependant, il y a deux exceptions à cette tendance : le Japon et le Mexique, qui sont les pays de naissance de 11 joueuses chacun.
+Nous pouvons constater que la quantité des joueuses de notre jeu de données est assez bien répartie entre chaque pays. En effet nous trouvons quasiment 12 joueuses dans chaque nation, sauf en Bulgarie où l'on en trouve 13 et le Japon et le Mexique qui en comptent 11.
 
-Il est intéressant de noter que la Bulgarie a l'effectif maximal dans ce diagramme, avec 13 joueuses nées dans ce pays. Cela indique que la Bulgarie est le pays d'origine le plus représenté.
+Il est intéressant de noter que la Bulgarie a l'effectif maximal dans ce diagramme, cela indique que la Bulgarie est le pays d'origine le plus représenté, contrairement au Japon et au Mexique qui sont les pays les moins représentés.
 
 
 ## La hauteur d'attaque des joueuses
 
+La hauteur d'attaque est une variable quantitative, mais il y a trop de modalités différentes pour faire un tri à plat (54 modalités).
+Nous réalisons donc un regroupement en classes de données.
+
 ```{r}
+
+#Spécification du nombre de classes souhaitées
+nombre_classes <- 5
+
+# Calcul des bornes des classes
+bornes_classes <- seq(min(attaque), max(attaque), length.out = nombre_classes + 1)
+
+# Utilisation de la fonction cut() pour regrouper les données en classes
+regroupement_classes <- cut(attaque, breaks = bornes_classes, include.lowest = TRUE)
+
+# Extraction des niveaux des classes
+niveaux_classes <- levels(regroupement_classes)
+
+# Calcul de l'effectif, de la fréquence et de la fréquence cumulée pour chaque niveau
+effectifs <- table(regroupement_classes)
+frequences <- prop.table(effectifs)
+freq_cumulees <- cumsum(frequences)
+
+# Création d'un tableau avec les résultats
+resultats <- data.frame(Niveaux = niveaux_classes, Effectifs = effectifs, Fréquences = paste(round(frequences*100, digits = 2), "%", sep = ""), Fréquences_cumulées = paste(round(freq_cumulees*100, digit = 2), "%", sep = ""))
+resultats
+
+```
+
+Nous pouvons constater que très peu de joueuses sautent plus bas que 273 cm : seulement 18 joueuses, ce qui correspond à 12,59% de notre effectif total. La plus grosse concentration se trouve dans les deux sous classes restantes (273, 304] et (304, 336] qui comptent respectivement 92 et 33 joueuses. Par rapport à notre effectif total, cela correspond à 64,64% pour la première classe et 23,08% pour la deuxième classe.
+
+
+```{r}
+
 # Calcul de la fonction de répartition empirique
 ecdf_attaque <- ecdf(attaque)
 
@@ -126,19 +162,25 @@ plot(ecdf_attaque, main = "Fonction de répartition empirique - Attaque", xlab =
 ```
 
 Les nombreux sauts de petite taille observés dans la variable suggèrent fortement que cette variable _quantitative_ est _continue_.
+Pour approfondir cette analyse, regardons un graphique en boîte à moustaches.
+
 
 ### Mesures de position
 
 ```{r}
-boxplot(attaque, main="La hauteur d'attaque des joueuses de volley")
+
+boxplot(attaque, main="Hauteur d'attaque des joueuses de volley")
+
 ```
 
-En observant ce diagramme, on peut clairement distinguer la valeur minimale, les quartiles, la médiane et la valeur maximale.
-
-Voici ces valeurs 
+En observant ce diagramme, on peut clairement distinguer la valeur minimale, les quartiles, la médiane et la valeur maximale dont les valeurs sont affichées ci-dessous.
+La médiane étant proche du centre de la boîte nous laisse penser que la distribution est symétrique.
+Les valeurs en dehors des moustaches représentent les valeurs dont nous avons parlés précédemment qui ne font pas parties des deux sous classes principales.
 
 ```{r}
-  summary(attaque)
+
+summary(attaque)
+
 ```
 
 
@@ -147,18 +189,22 @@ Voici ces valeurs
 #### Estimation de moyenne
 
 ```{r}
-  interval=t.test(attaque)
-  interval$conf.int
-  mean(attaque)
+
+interval=t.test(attaque)
+interval$conf.int
+mean(attaque)
+
 ```
 
 Nous pouvons estimer que la vraie moyenne de l'attaque se situe dans l'intervalle [284.5521, 293.0283] avec un niveau de confiance de 95%.
 
-L'estimateur de la moyenne est égal à 288.79
+L'estimateur de la moyenne est égal à 288.79 cm.
+
 
 #### Estimation de variance 
 
 ```{r}
+
 # Calcul de l'intervalle de confiance pour la variance
 n <- length(attaque)  # Taille de l'échantillon
 alpha <- 0.05  # Niveau de confiance (ici 95%)
@@ -170,54 +216,60 @@ upper_bound <- (n - 1) * var(attaque) / qchisq(alpha/2, df = n - 1)
 confidence_interval <- c(lower_bound, upper_bound)
 confidence_interval
 var(attaque)
+
 ```
 
-De même nous estimons que la variance de la hauteur d'attaque des joueuses se situe dans l'intervalle [527.6508 841.5602] avec un niveau de confiance de 95%.
+De même nous estimons que la variance de la hauteur d'attaque des joueuses se situe dans l'intervalle [527.6508, 841.5602] avec un niveau de confiance de 95%.
 
-L'éstimateur de la variance est égale à 657.27
+L'estimateur de la variance est égal à 657.27.
+
 
 #### Caractère gaussien
 
 ```{r}
+
 hist(attaque , main="Repartition de la hauteur d'attaque ",xlab="La hauteur d'attaque",prob=T)
 curve(dnorm(x, mean(attaque), sd(attaque)), col=2, add=TRUE, lty=2)
 
 qqnorm(attaque, main = "QQ-Plot", xlab = "Théorique", ylab = "Observé")
 abline(mean(attaque),sd(attaque),col=2)
+
 ```
 
-Sur ce graphique, nous pouvons observer que l'histogramme de la distriburion de la hauteur d'attaque n'est pas symétrique. Nous voyons que la variable visiblement ne s'approche pas à la loi normale. Nous allons vérifier ces propos à l'aide de tests statistiques.
-
-Pour valider notre estimation, nous procéderons aux tests statistiques.
+Sur ce graphique, nous pouvons observer que l'histogramme de la distribution de la hauteur d'attaque n'est pas symétrique. Nous voyons que la variable ne s'approche pas de la loi normale. Nous allons vérifier ces propos à l'aide de tests statistiques.
 
 
 #### Test de la normalité de distribution
 
 Les hypothèses sont les suivantes :
 
-* H0 : La variable suit la loi normale
-* H1 : La variable ne suit pas la loi normale
+* H0 : La variable attaque suit la loi normale
+* H1 : La variable attaque ne suit pas la loi normale
 
 ```{r}
+
 shapiro.test(attaque)
+
 ```
 
-La p valeur du test est extrêmement faible, soit 1.619e-13, ce qui indique que nous avons suffisamment de preuves pour rejeter l'hypothèse nulle  H0 selon laquelle les données suivent une distribution normale.
+La p valeur du test est extrêmement faible : 1.619e-13. Cela indique que nous avons suffisamment de preuves pour réfuter l'hypothèse H0 et valider l'hypothèse H1 selon laquelle la variable attaque ne suit pas une distribution normale.
 
 
 ## Analyse bivariée
 
 ### La hauteur d'attaque selon le pays
 
-__Est-ca que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays?__
+__Est-ce que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays ?__
 
-Après avoir étudié les pays de naissance des joueuses et leurs hauteurs d'attaque, nous pouvons désormais analyser la hauteur d'attaque selon le pays de naissance des joueuses.
+Après avoir étudié le pays de naissance des joueuses et leur hauteur d'attaque, nous pouvons désormais analyser la hauteur d'attaque selon le pays de naissance des joueuses.
 
 La hauteur d'attaque des joueuses est une variable _quantitative continue_, tandis que leur pays de naissance est une variable _qualitative discrète_.
+
 
 #### Moyennes de la hauteur d'attaque de chaque pays
 
 ```{r}
+
 # Calculer la moyenne d'attaque pour chaque pays
 moyenne_attaque <- aggregate(attaque, by = list(pays), FUN = mean)
 
@@ -232,24 +284,29 @@ ggplot(moyenne_attaque, aes(x = Pays, y = Moyenne_attaque, fill = Pays)) +
   theme(plot.margin = margin(1, 5, 1, 1, "cm")) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   coord_cartesian(clip = "off")
+
 ```
 
-Nous pouvons voir ici que les moyennes les plus elevées sont au Brésil, en Chine, en Italie et en Serbie.
+Nous pouvons voir ici que les moyennes des hauteurs d'attaque les plus élevées se situent au Brésil, en Chine, en Italie et en Russie avoisinant les 300 cm.
 
 ```{r}
-   mean(data$attaque[data$pays=="Bresil"])
-   mean(data$attaque[data$pays=="China"])
-   mean(data$attaque[data$pays=="Italie"])
-   mean(data$attaque[data$pays=="Serbie"])
+
+mean(data$attaque[data$pays=="Bresil"])
+mean(data$attaque[data$pays=="China"])
+mean(data$attaque[data$pays=="Italie"])
+mean(data$attaque[data$pays=="Russie"])
+
 ```
-La moyenne la plus elevées est en Italie
+
+La moyenne d'hauteur d'attaque la plus elevée est en Italie et vaut 306,75 cm.
 
 ```{r}
+
 attaque<-data$attaque
 
 ggplot(data, aes(x = pays, y = attaque)) +
   geom_boxplot() +
-  labs(title = "La hauteur d'attaque moyenne des joueuses en fonction de leur pays de naissance",
+  labs(title = "Hauteur d'attaque moyenne des joueuses en fonction de leur pays de naissance",
        x = "Pays de naissance",
        y = "La hauteur d'attaque") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -258,41 +315,44 @@ ggplot(data, aes(x = pays, y = attaque)) +
 
 Ce graphique en boîte permet d'observer les quartiles et la médiane de la hauteur d'attaque des joueuses des différents sous-groupes, représentés par leur nationalité. Chaque boîte représente la distribution de la hauteur d'attaque pour un pays spécifique.
 
-Nous pouvons voir les pays qui ont les meilleurs aptitudes sportives : la Chine, la Cuba, l'Italie et la Russie (les pays avec une médiane supérieure à 300). Il est interesssant de noter aussi que le pays avec la plus grande variaces est le Mexique ce qui est très différent des autres pays
+Nous pouvons voir les pays qui ont les meilleurs aptitudes sportives : la Chine, Cuba, l'Italie et la Russie (les pays avec une médiane supérieure à 300). Il est intéresssant de noter aussi que le pays avec la plus grande variance est le Mexique, ce qui est très différent des autres pays.
 
 ```{r}
+
 var(data$attaque[pays=="Mexique"])
+
 ```
-La variance de la hauteur d'attaque de ce sous groupe (pays) est 3 fois plus que la variance du group entier (tous les pays)
+La variance de la hauteur d'attaque de ce sous groupe (Mexique) est 3 fois plus élevée que la variance du groupe entier (tous les autres pays).
 
 Maintenant que nous avons examiné les résultats graphiques, nous pouvons utiliser ces données pour effectuer des tests statistiques. Voici les tests que nous effectuerons en utilisant les résultats de la hauteur d'attaque des différentes nationalités :
 
-* Test de comparaison de moyennes : Sur le graphique, nous remarquons une similitude des moyennes de la hauteur d'attaque entre la Chine et Cuba. Afin de vérifier si cette similitude est statistiquement significative, nous allons effectuer un test d'égalité des moyennes entre ces deux pays.
-* Test de comparaison de variances : De même nous observons une similarité entre les variances enre la Cuba et l'Egypte, nous allons donc effectuer un test d'égalité des moyennes pour ces deux pays et ensuite un test d'égalité des variances.
+* Test de comparaison de moyennes : sur le graphique, nous remarquons une similitude des moyennes de la hauteur d'attaque entre la Chine et Cuba. Afin de vérifier si cette similitude est statistiquement significative, nous allons effectuer un test d'égalité des moyennes entre ces deux pays.
+* Test de comparaison de variances : de même, nous observons une similarité entre les variances de Cuba et l'Egypte. Nous allons donc effectuer un test d'égalité des moyennes pour ces deux pays et ensuite un test d'égalité des variances.
 
 
-### Tests statistiques 
-
-* Test d'égalité des moyennes de la hauteur d'attaque entre la Chine et la Cuba. Les hypothèses sont les suivantes 
-
-  + H0 Les moyennes sont égales
-  + H1 Les moyennes sont différentes
-
+### Tests statistiques
 
 ### Tests d'égalité des moyennes
 
+* Test d'égalité des moyennes de la hauteur d'attaque entre la Chine et Cuba. Les hypothèses sont les suivantes :
+
+  + H0 : Les moyennes sont égales
+  + H1 : Les moyennes sont différentes
+
 ```{r}
+
 attaque_cuba <- attaque[pays == "Cuba"]
 attaque_china <- attaque[pays == "China"]
 t.test(attaque_cuba, attaque_china)
+
 ```
 
-La p-valeur est grande (26,32%) par rapport au risque de 5% de se tromper. Nous pouvons donc accepter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales et rejetter l'hypothèse H1 selon laquelle les deux moyennes sont différentes. Nous constatons également que la différence entre ces deux moyennes se trouve dans l'intervalle [-32.8, 9.8] avec un niveau de confiance de 95%.
+La p-valeur est grande (26,32%) par rapport au risque de 5% de se tromper. Nous pouvons donc accepter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales et rejeter l'hypothèse H1 selon laquelle les deux moyennes sont différentes. Nous constatons également que la différence entre ces deux moyennes se trouve dans l'intervalle [-32.8, 9.8] avec un niveau de confiance de 95%.
 
 
 ### Tests d'égalité des variances
 
-Pour effectuer des tests d'égalité des variances, il est recommandé de vérifier d'abord l'adéquation à la distribution normale des échantillons concernés. Dans notre cas, nous avons deux sous-groupes : Cuba et Égypte. Nous allons donc procéder à des tests de normalité pour ces deux groupes.
+Pour effectuer des tests d'égalité des variances, il est recommandé de vérifier d'abord l'adéquation à la distribution normale des échantillons concernés. Dans notre cas, nous avons deux sous-groupes : Cuba et l'Égypte. Nous allons donc procéder à des tests de normalité pour ces deux groupes.
 
 Les hypothèses sont les suivantes :
 
@@ -300,46 +360,53 @@ Les hypothèses sont les suivantes :
 * H1 : La variable ne suit pas la loi normale 
 
 ```{r}
+
 hist(data[data$pays == "Cuba", "attaque"])
 shapiro.test(data[data$pays == "Cuba", "attaque"])
+
 hist(data[data$pays == "Egypte", "attaque"])
 shapiro.test(data[data$pays == "Egypte", "attaque"])
+
 ```
 
-Pour les deux tests la p-valeur obtenue est petite, donc nous ne pouvons pas rejjeter l'hypothèse nulle selon laquelle la variable suit la loi normale. Nous supposons donc par la suite que ces deux échantillons ne suivent pas une distribution normale.
+Pour les deux tests la p-valeur obtenue est petite, donc nous pouvons rejeter l'hypothèse H0 selon laquelle la variable suit la loi normale. Nous supposons donc par la suite que ces deux échantillons ne suivent pas une distribution normale.
 
-Vu que nos échantillons ne suivent pas une distribution normale nous allond vérifier l'égalité des variances de ces deux échantillons avec un test Fisher
+Vu que nos échantillons ne suivent pas une distribution normale nous allons vérifier l'égalité des variances de ces deux échantillons avec un test Fisher.
 
-Test d'égalité des variance entre la Cuba et l'Egypte :
+Test d'égalité des variances entre Cuba et l'Egypte :
 
-* H0 Les variances sont égales
-* H1 Les variances sont différentes
+* H0 : Les variances sont égales
+* H1 : Les variances sont différentes
   
 ````{r}
+
 attaque_egypt <- attaque[pays == "Egypte"]
 var.test(attaque_cuba, attaque_egypt)
+
 ````
 
-La p-valeur est petite mais légérement plus grande que le risque de 5% nous ne pouvons donc pas rejetter l'hypothèse nulle selon laquelle les variances sont égales.
+La p-valeur est petite mais légérement plus grande que le risque de 5% nous ne pouvons donc pas rejeter l'hypothèse H0 selon laquelle les variances sont égales.
 
 Nous supposons dans la suite que les variances de ces deux échantillons sont égales.
 
 
-Test d'égalité des moyennes de la hauteur d'attaque entre la Cuba et l'Égypte. Les hypothèses sont les suivantes :
+Test d'égalité des moyennes de la hauteur d'attaque entre Cuba et l'Égypte. Les hypothèses sont les suivantes :
 
-* H0 Les moyennes sont égales
-* H1 Les moyenne sont différentes
+* H0 : Les moyennes sont égales
+* H1 : Les moyenne sont différentes
 
 ```{r}
+
 t.test(attaque_cuba, attaque_egypt, var.equal = T)
+
 ```
 
-La p-valeur est plus petite que dans le premier test mais elle reste supérieure au risque de 5%. Nous n'avons donc pas suffisament de preuve pour rejetter l'hypothèse nulle HO selon laquelle les deux moyennes sont égales par consequent nous l'acceptons. Nous observons que la différence entre ces deux moyennes se trouve dans l'intervalle [-1.38, 50.05] avec un niveau de confiance de 95%.
+La p-valeur est plus petite que dans le premier test, mais elle reste supérieure au risque de 5%. Nous n'avons donc pas suffisament de preuve pour rejeter l'hypothèse HO selon laquelle les deux moyennes sont égales. Par conséquent, nous l'acceptons. Nous observons que la différence entre ces deux moyennes se trouve dans l'intervalle [-1.38, 50.05] avec un niveau de confiance de 95%.
 
 
 # Les postes des joueuses selon leur pays de naisssance
 
-__Est-ce que le poste d'une joueuse dépend de son pays de naissance?__
+__Est-ce que des postes sont plus ou moins représentés dans un pays que dans un autre ?__
 
 ## Poste 
 
@@ -358,17 +425,19 @@ barplot(tri_a_plat, main = "Diagramme en barres sur l'effectif de chaque poste",
 33,5% de notre échantillon est représenté par les pointues. Une répartition est quasi équitable entre les passeuses et les réceptionneuses/attaquantes, tandis que l'on retrouve un peu plus du double de centrale que de libero qui est le poste le moins représenté dans notre échantillon.
 
 ```{r}
+
 # Création du tableau de contingence
 table_contingence <- table(pays, poste)
 
 # Affichage du tableau de contingence
 print(table_contingence)
+
 ```
 
-Nous pouvons observer ici qu’il n’y a pas de receptionneuse/attaquante en Turquie. Nous vouyons que le pays avec le plus grand nombre de joueuses occupant
+Nous pouvons observer ici qu’il n’y a pas de receptionneuse/attaquante en Turquie. Nous voyons que le pays avec le plus grand nombre de joueuses occupant :
 
 * le poste de centrale est le Brésil
-* le poste libero sont la Serbie, la Turquie et la Chine
+* le poste de libero sont la Serbie, la Turquie et la Chine
 * le poste de passeuse est loa Turquie
 * le poste de pointue est la Bulgarie
 * le poste de receptionneuse/attaquante est la Cuba et l’Italie
@@ -376,6 +445,7 @@ Nous pouvons observer ici qu’il n’y a pas de receptionneuse/attaquante en Tu
 Pour illustrer ces données nous proposons un diagramme en barres avec les différents pays et les effectifs de postes pour chaque pays.
 
 ````{r}
+
 df <- as.data.frame.table(table_contingence)
 
 # Renommer les colonnes du data frame
@@ -386,48 +456,55 @@ ggplot(df, aes(x = Pays, y = Effectif, fill = Poste)) +
   geom_bar(stat = "identity", position = "stack") +
   labs(x = "Pays", y = "Effectif", fill = "Poste") +
   theme_minimal()+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 ````
 
 ## Test d'indépendence des deux variables
 
-* H0 Les deux variables sont appariées
-* H1 Les deux variables sont indépendantes
+* H0 : Les deux variables sont appariées
+* H1 : Les deux variables sont indépendantes
 
 ```{r}
-  chisq.test(data$pays, data$poste)
+
+chisq.test(data$pays, data$poste)
+
 ```
-La p-valeur est de 1, donc on a suffisamment de preuves pour rejetter l'hypothèse nulle. Nous concluons que les deux variables sont indépendantes. 
+
+La p-valeur est de 1, donc on a suffisamment de preuves pour rejeter l'hypothèse H0. Nous concluons que les deux variables sont indépendantes. 
 
 Nous pouvons également observer cela sur le diagramme en barres.
+
 
 # La hauteur d'attaque selon la taille
 
 ### La taille des joueuses
 
 ```{r}
-  #Spécification du nombre de classes souhaitées
-  nombre_classes <- 3
+
+#Spécification du nombre de classes souhaitées
+nombre_classes <- 3
   
-  # Calcul des bornes des classes
-  bornes_classes <- seq(min(taille), max(taille), length.out = nombre_classes + 1)
+# Calcul des bornes des classes
+bornes_classes <- seq(min(taille), max(taille), length.out = nombre_classes + 1)
   
-  # Utilisation de la fonction cut() pour regrouper les données en classes
-  regroupement_classes <- cut(taille, breaks = bornes_classes, include.lowest = TRUE)
+# Utilisation de la fonction cut() pour regrouper les données en classes
+regroupement_classes <- cut(taille, breaks = bornes_classes, include.lowest = TRUE)
   
-  # Extraction des niveaux des classes
-  niveaux_classes <- levels(regroupement_classes)
+# Extraction des niveaux des classes
+niveaux_classes <- levels(regroupement_classes)
   
-  # Calcul de l'effectif, de la fréquence et de la fréquence cumulée pour chaque niveau
-  effectifs <- table(regroupement_classes)
-  frequences <- prop.table(effectifs)
-  freq_cumulees <- cumsum(frequences)
+# Calcul de l'effectif, de la fréquence et de la fréquence cumulée pour chaque niveau
+effectifs <- table(regroupement_classes)
+frequences <- prop.table(effectifs)
+freq_cumulees <- cumsum(frequences)
   
-  # Création d'un tableau avec les résultats
-  resultats <- data.frame(Niveaux = niveaux_classes, Effectifs = effectifs, Fréquences = paste(round(frequences*100, digits = 2), "%", sep = ""), Fréquences_cumulées = paste(round(freq_cumulees*100, digit = 2), "%", sep = ""))
-  resultats
+# Création d'un tableau avec les résultats
+resultats <- data.frame(Niveaux = niveaux_classes, Effectifs = effectifs, Fréquences = paste(round(frequences*100, digits = 2), "%", sep = ""), Fréquences_cumulées = paste(round(freq_cumulees*100, digit = 2), "%", sep = ""))
+resultats
+  
 ```
-Nous pouvons constater que très peu de joueuses mesurent moins de 168 cm : seulement 12 joueuses, ce qui correspond environ  8% de notre effectif total. Cela nous amène à dire qu'il y a deux classes principales [168, 184] et [184,199] qui comptent respectivement 67 et 64 joueuses. Par rapport à notre effectif total, cela correspond environ à 47% pour la première classe et 45% pour la deuxième classe.
+Nous pouvons constater que très peu de joueuses mesurent moins de 168 cm : seulement 12 joueuses, ce qui correspond à 8,39% de notre effectif total. Cela nous amène à dire qu'il y a deux classes principales [168, 184] et [184,199] qui comptent respectivement 67 et 64 joueuses. Par rapport à notre effectif total, cela correspond à 46,85% pour la première classe et 44,76% pour la deuxième classe.
 
 
 ```{r}
@@ -444,6 +521,7 @@ donnees_triees <- sort(taille)
 plot(donnees_triees, sapply(donnees_triees, fonction_repartition_empirique), type = "s", 
      xlab = "Taille", ylab = "Fonction de répartition empirique", 
      main = "Fonction de répartition empirique")
+
 ```
 
 Il découle de ce graphique qu'il y a des sauts de petite taille en quantité. Cela prouve bien que notre variable quantitative est continue.
@@ -456,6 +534,7 @@ Pour approfondir cette analyse, regardons un graphique en boîte à moustaches.
 boxplot(taille, 
         main = "Graphique en boîte à moustaches",
         xlab = "Taille")
+
 ```
 
 La médiane est d'environ 182 cm. Elle est proche du centre de la boîte ce qui nous suggère que la distribution est symétrique.
@@ -470,6 +549,7 @@ hist(taille,
      breaks = "FD",
      main = "Graphique : histogramme",
      xlab = "Taille")
+
 ```
 
 Ici, le 'breaks = "FD"' signifie que nous souhaitons utiliser la méthode de calcul automatique des intervalles, appelée "Freedman-Diaconis". Cette méthode prend en compte la taille de l'échantillon et la variation des données pour déterminer le nombre optimal d'intervalles.
@@ -479,7 +559,9 @@ Nous pouvons constater que la taille de nos joueuses va de 150 cm à 200 cm. On 
 #### Quartiles, minimum, maximum
 
 ```{r}
+
 summary(taille)
+
 ```
 
 #### Caractère gaussien
@@ -497,10 +579,11 @@ abline(mean(taille), sd(taille), col=2)
 
 ```
 
-On observe que l'histogramme de la répartition de la taille des joueuses est plutôt symétrique. La variable s'approche à la distribution normale.
+On observe que l'histogramme de la répartition de la taille des joueuses est plutôt symétrique. La variable s'approche légèrement de la distribution normale.
 
 Pour vérifier si la variable suit la loi normale nous allons procéder aux test de normalité.
 
+Considérons les deux hypothèses suivantes :
 
 * H0 : la variable suit la loi normale 
 * H1 : la variable ne suit pas la loi noramale 
@@ -510,15 +593,18 @@ Pour vérifier si la variable suit la loi normale nous allons procéder aux test
 shapiro.test(taille)
 
 ```
-La p-valeur est faible, nous pouvons rejetter l'hypothèse nulle. Donc, contrairement à nos observations la variable ne suit pas la loi normale.
+
+La p-valeur est faible, ce qui signifie que nous pouvons rejeter l'hypothèse H0. Donc, contrairement à nos observations la variable ne suit pas la loi normale.
+
 
 ## La hauteur de l'attaque selon la taille des joueuses
 
-__Est-ce que la hauteur de l'attaque dépend de la taille d'une joueuse?__
+__Est-ce que la hauteur de l'attaque dépend de la taille d'une joueuse ?__
 
 Nous supposons que la hauteur d'attaque d'une joueuse peut dépendre de sa taille.
 
 ```{r}
+
 ggplot(data,aes(x=taille,y=block))+ geom_point()+
 xlab("Taille")+
 ylab("Hauteur d'attaque")
@@ -530,42 +616,45 @@ Pour vérifier cette supposition nous allons voir s'il y a une corrélation entr
 ## Corrélation
 
 ```{r}
-    cor(taille, attaque)
+
+cor(taille, attaque)
+
 ```
 
-Le coefficient de corrélation linéaire (de Pearson) de 0,64 est plus proche de 1 que de 0. Cela suggère qu'il y a une tendance pour les valeurs plus grandes de "taille" à être associées à des valeurs plus grandes de "attaque"
+Le coefficient de corrélation linéaire (de Pearson) d'environ 0,64 est plus proche de 1 que de 0. Cela suggère qu'il y a une tendance pour les valeurs plus grandes de "taille" à être associées à des valeurs plus grandes de "attaque"
 
 ## Régression linéaire 
 
 Vu que les deux variable sont _quantitatives continues_ nous pouvons appliquer la régression linéaire.
 
-
 Définissons nos variables. Nous allons utiliser la taille et la hauteur d'attaque en cm.
 
 
 ```{r}
+
 reg_multi <- lm(attaque~taille)
-```
-```{r}
+
 summary(reg_multi)
+
 ```
 
-Nous retrouvons ici Beta 1: --68.28 et Beta 2: 1.97. Donc, on peut tracer notre droite
-y = Beta 1 + Beta 2 * x
+Nous retrouvons ici Beta 1: -68.28 et Beta 2: 1.97. Donc, on peut tracer notre droite
+y = Beta 1 + Beta 2 * x.
 
-La valeur de R² étant 0.4039 est éloignée de 1. Donc nous ne pouvons pas dire qu'il y a forcement une corrélation entre ces deux variables. 
+La valeur de R² étant de 0.4039, elle est éloignée de 1. Donc nous ne pouvons pas dire qu'il y a forcément une corrélation entre ces deux variables. 
 
 Mais 0,4039 n'est pas extrêmement faible non plus. Nous pouvons dire que ce résultat provient du fait que nous avons un échantillon  de taille limitée ne nous permettant pas d'avoir une analyse assez solide.
 
-
 ```{r}
+
 anova(reg_multi)
+
 ```
 
 La valeur de SSE est de 55637, tandis que celle de SSM est de 37695. Bien qu'il y ait une différence entre ces deux valeurs, elle n'est pas significative. Cependant, cela nous conduit à la conclusion que nous ne pouvons pas établir de corrélation avec nos données.
 
-
 ```{r}
+
 ggplot(data,aes(x=taille,y=attaque))+ geom_point()+
 xlab("Taille")+
 ylab("Hauteur d'attaque")
@@ -586,23 +675,22 @@ ylab("Attaque")
 
 ```
 
-Comme constaté précédement, la droite tracé regroupe effectivement une partie des valeurs entre 250 et 350 (sur l'abcisse). Les valeurs plus éloignées de cette droite se trouvent vers le bas de l'abcisse.
+Comme constaté précédement, la droite tracé regroupe effectivement une partie des valeurs entre 250 et 350 (sur l'abscisse). Les valeurs plus éloignées de cette droite se trouvent vers le bas de l'abscisse.
 
 
 # Conclusion
 
-Pour conclure les analyses statistiques effectuées sur cet échantillon nous reprenons les qustions que nous avons posé au début
+Pour conclure les analyses statistiques effectuées sur cet échantillon, nous reprenons les questions que nous nous sommes posé au début.
 
-__Est-ca que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays?__
+__Est-ce que les performances sportives (dans notre cas la hauteur d'attaque) des joueuses changent selon leur pays ?__
 
-Nous avons vu que la hauteur d'attaque moyenne change selon le pays de naissance d'une joueuse.Nous avons trouvé à l'aide des tests que les moyennes de la hauteur d'attaque sont égales entre Cuba et Chine, Cuba et l'Égypte. Les variance sont égales entre Cuba et Égyote. 
+Nous avons vu que la hauteur d'attaque moyenne change selon le pays de naissance d'une joueuse. Nous avons trouvé à l'aide des tests que les moyennes de la hauteur d'attaque sont égales entre Cuba, la Chine et l'Égypte. Les variances sont égales entre Cuba et l'Égypte.
+Cela signifie que les performances sont différentes selon les pays mise à part l'exception des pays cités ci-dessus.
 
-__Est-ce que le poste d'une joueuse dépend de son pays de naissance?__
+__Est-ce que des postes sont plus ou moins représentés dans un pays que dans un autre ?__
 
-Suite à notre analyse nous n'avons pas pu établir de lien entre le poste et le peys de naissance d'une joueuse. 
+Suite à notre analyse nous n'avons pas pu établir de lien entre le poste et le pays de naissance des joueuses.
 
-__Est-ce que la hauteur de l'attaque dépend de la taille d'une joueuse?__
+__Est-ce que la hauteur de l'attaque dépend de la taille d'une joueuse ?__
 
-Nous pouvons supposer qu'il existe une corrélation entre la taille et la hauteur d'attaque d'une joueuse. Les joueuse plus grandes ont tendances d'avoir la hauteur d'attaque plus élevée. Mais nous ne pouvons pas faire de conclusion avec les valeurs obtenues. C'est possible qu'il y a une corrélation mais notre échantillon est limité pour en déduire une.
-
-
+Nous pouvons supposer qu'il existe une corrélation entre la taille et la hauteur d'attaque d'une joueuse. Les joueuses plus grandes ont tendance à avoir un hauteur d'attaque plus élevée. Mais nous ne pouvons pas faire de conclusion avec les valeurs obtenues. C'est possible qu'il y ai une corrélation, mais notre échantillon est limité pour en déduire une.
